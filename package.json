@@ -1,0 +1,23 @@
+{
+  "name": "yet-another-social-media-platform",
+  "version": "1.0.0",
+  "description": "The all new social media platform, YASMP!!",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashumatai/Yet-Another-Social-Media-Platform.git"
+  },
+  "keywords": [
+    "yasmp"
+  ],
+  "author": "Group 53",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashumatai/Yet-Another-Social-Media-Platform/issues"
+  },
+  "homepage": "https://github.com/ashumatai/Yet-Another-Social-Media-Platform#readme"
+}
