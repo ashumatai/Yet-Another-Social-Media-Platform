@@ -19,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/ashumatai/Yet-Another-Social-Media-Platform/issues"
   },
-  "homepage": "https://github.com/ashumatai/Yet-Another-Social-Media-Platform#readme"
+  "homepage": "https://github.com/ashumatai/Yet-Another-Social-Media-Platform#readme",
+  
+  "dependencies": {
+    "mongodb": "^4.12.1"
+  }
+  
+  
 }
