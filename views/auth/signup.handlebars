@@ -1,0 +1,28 @@
+  <h3>Let's get you started</h3>
+  <form id="registration-form" method="POST" action="/register">
+    <div>
+      <label for="firstnameInput">First Name:</label>
+      <input name="firstnameInput" id="firstnameInput"/>
+      <label for="lastnameInput">Last Name:</label>
+      <input name="lastnameInput" id="lastnameInput"/>
+    </div>
+    <div>
+      <label for="ageInput">Date of Birth (MM/DD/YYYY):</label>
+      <input name="ageInput" id="ageInput"/>
+    </div>
+    <div>
+      <label for="usernameInput">Username:</label>
+      <input name="usernameInput" id="usernameInput"/>
+    </div>
+    <div>
+      <label for="passwordInput">Password:</label>
+      <input name="passwordInput" id="passwordInput" type="password"/>
+    </div>
+    {{#if error}}
+    <div>
+      {{error}}
+    </div>
+    {{/if}}
+    <button type="submit">Submit</button>
+  </form>
+  <a href="/">Already have an account? Click here to log-in</a>

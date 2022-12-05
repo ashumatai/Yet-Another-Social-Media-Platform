@@ -1,0 +1,18 @@
+<h3>Welcome! Sign-in here, YASMP awaits beyond...</h3>
+<form id="login-form" method="POST" action="/login">
+  <div>
+    <label for="usernameInput">Username:</label>
+    <input name="usernameInput" id="usernameInput" />
+  </div>
+  <div>
+    <label for="passwordInput">Password:</label>
+    <input name="passwordInput" id="passwordInput" type="password" />
+  </div>
+  {{#if error}}
+    <div>
+      {{error}}
+    </div>
+  {{/if}}
+  <button type="submit">Submit</button>
+</form>
+<a href="/register">Click here to register!</a>
