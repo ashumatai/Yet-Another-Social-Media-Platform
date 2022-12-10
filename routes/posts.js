@@ -11,7 +11,7 @@ router
   });
 
 router
-  .route('/:postId').get(async (req, res) => {
+  .route('/:postId').post(async (req, res) => {
    
 });
 
