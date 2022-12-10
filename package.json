@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "seed": "node tasks/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -12,7 +13,9 @@
     "url": "git+https://github.com/ashumatai/Yet-Another-Social-Media-Platform.git"
   },
   "keywords": [
-    "yasmp"
+    "yasmp",
+    "social-media",
+    "chat"
   ],
   "author": "Group 53",
   "license": "ISC",
@@ -22,6 +25,8 @@
   "homepage": "https://github.com/ashumatai/Yet-Another-Social-Media-Platform#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
     "express-session": "^1.17.3",
