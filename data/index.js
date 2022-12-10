@@ -1,9 +1,3 @@
-const userData = require('./users');
-const postData = require('./posts');
-const savedPostsData= require('./savedPosts');
-
-module.exports = {
-  users: userData,
-  posts: postData,
-  savedPosts: savedPostsData
-};
+conversations = require("./conversations");
+posts = require("./posts");
+users = require("./users");
