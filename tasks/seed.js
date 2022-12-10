@@ -20,11 +20,13 @@ const user1 = {
 };
 const { users } = require("../config/mongoCollections");
 
-users.insert(user1, (error, result) => {
-  if (error) {
-    return response.status(500).send(error);
-  }
-  response.send(result.result);
-});
+const seedFn = async () => {
+  const userCollection = await users();
+  const addNewUser = await userCollection.insertOne(user1);
+  console.log(addNewUser);
+  return addNewUser;
+};
+
+seedFn();
 
 console.log("Seeded!");
