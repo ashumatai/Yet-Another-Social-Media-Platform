@@ -2,8 +2,8 @@ const { ObjectId } = require("mongodb");
 /**
  * @author Kajol Rajesh Shah <kajol.shsh@gmail.com>
  * */
+// TODO: Use template strings instead of string concatenation e.g. line 16 & line 18  
 
-// TODO: Use template strings instead of string concatenation e.g. line 16 & line 18
 const validString = function error_handling_for_string(
   userInput,
   inputParameter
@@ -23,6 +23,12 @@ const validString = function error_handling_for_string(
 };
 
 const validObjectId = function error_handling_for_id(inputId, inputParameter) {
+  /**
+   * @param {inputId} string - The input given by the user to be validated as a objectid
+   * @param {inputParameter} string - The name of the input variable
+   * @throws {MissingInput} `Please provide ${inputParameter}`
+   * @throws {InvalidObjectID} `Invalid object " + inputParameter`
+   */
   if (!inputId) throw "You must provide an " + inputParameter;
   if (typeof inputId !== "string" || typeof inputId === "undefined")
     throw inputParameter + " must be a string";
@@ -33,6 +39,12 @@ const validObjectId = function error_handling_for_id(inputId, inputParameter) {
     throw "Invalid object " + inputParameter;
 };
 const validName = function error_handling_for_name(inputName, inputParameter) {
+   /**
+   * @param {inputName} string - The input given by the user to be validated as a valid name
+   * @param {inputParameter} string - The name of the input variable
+   * @throws {Format1} `inputParameter + " must be atleast 3 character long and should not contain special characters or numbers"`
+   * @throws {Format2} `inputParameter + " should be in valid format`
+   */
   if (!inputName) throw "Please provide " + inputParameter;
   if (typeof inputName !== "string" || typeof inputName === "undefined")
     throw inputParameter + " must be a string";
@@ -57,6 +69,11 @@ const validStatus = function error_handling_for_status(
   inputStatus,
   inputParameter
 ) {
+   /**
+   * @param {inputStatus} string - The input given by the user to be validated as a valid status
+   * @param {inputParameter} string - The name of the input variable
+   * @throws {statusFormat} `"Please enter valid " + inputParameter + " type"`
+   */
   if (!inputStatus) throw "Please provide " + inputParameter;
   if (typeof inputStatus !== "string" || typeof inputStatus === "undefined")
     throw inputParameter + " must be a string";
@@ -72,6 +89,15 @@ const validLogin = function error_handling_for_login(
   inputUsername,
   inputPassword
 ) {
+  /**
+   * @param {inputUsername} string - The input given by the user to be validated as a valid username
+   * @param {inputPassword} string - The input given by the user to be validated as a valid password
+   * @throws {MissingInput} `You must provide username and password`
+   * @throws {noSpecialChar} `Please enter valid username .i.e without special characters or spaces`
+   * @throws {passwordLength} `Password should be at least 6 characters long.`
+   * @throws {passwordSpaces} `Password cannot contain spaces`
+   * @throws {passwordFormat} `Password should contain at least one uppercase character, at least one number and at least one special character`
+   */
   let format = /[` !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
   let spaces = /(.*\s{1,}.*)|(^\s+.*)|(.*\s+$)/g;
   let password_format = /^(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/g;
@@ -94,6 +120,10 @@ const validLogin = function error_handling_for_login(
     throw "Password should contain at least one uppercase character, at least one number and at least one special character";
 };
 const validEmail = function error_handling_for_email(inputEmail) {
+   /**
+   * @param {inputEmail} string - The input given by the user to be validated as a valid email address
+   * @throws {emailFormat} `"Please enter valid Email Address" `
+   */
   let emailFormat =
     /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/g;
   inputEmail = inputEmail.trim();
@@ -105,6 +135,10 @@ const validEmail = function error_handling_for_email(inputEmail) {
 const validPhoneNumber = function error_handling_for_phoneNumber(
   inputPhoneNumber
 ) {
+    /**
+   * @param {inputPhoneNumber} string - The input given by the user to be validated as a valid phone number
+   * @throws {emailFormat} `"Please enter valid Phone number" `
+   */
   let mobileFormat = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s-]\d{3}[\s-]\d{4}$/g;
   inputPhoneNumber = inputPhoneNumber.trim();
   if (!inputPhoneNumber) throw "You must provide Phone Number ";
