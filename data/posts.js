@@ -38,5 +38,4 @@ const getPostById = async (postId) => {
   
   post._id = post._id.toString();
   return post;
-  
 };
