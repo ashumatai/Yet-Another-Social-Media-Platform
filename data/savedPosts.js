@@ -18,7 +18,7 @@ const getsavedPost = async (userId) => {
     for (const data of savedPostData) {
       postData.push(await postscollection.findOne({_id: ObjectId(data)}));
     }
-    if(postData === null) throw {error:'No saved posts found  '+userId};
+    if(postData.length===0) throw {error:'No saved posts found  '+userId};
     return postData; 
   };
 
