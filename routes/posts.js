@@ -96,4 +96,22 @@ router
     }
 });
 
+router.
+route('/').post(async (req, res) => {
+  const postInfo = req.body;
+  try {
+    const newPost = await postData.createPost(
+      postInfo.postContent,
+      postInfo.caption,
+      postInfo.tags,
+      //req.session.user
+      '639518baec8160da0010d848'
+    );
+    res.json(newPost);
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ error: e });
+    }
+})
+
 module.exports = router;
