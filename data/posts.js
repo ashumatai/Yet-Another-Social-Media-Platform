@@ -54,28 +54,49 @@ const getPostById = async (postId) => {
 };
 
 
-const createPost = async ( postContent, caption, tags, email, comments, likes) => {
+const createPost = async ( postContent, caption, tags, userId) => {
+
+  if(!postContent) 
+    throw [400,"You must provide an image path"];
+  // if(!postContent.endsWith('.jpg') || !postContent.endsWith('.jpeg') || !postContent.endsWith('.png'))
+  //   throw [400,"You must provide image in proper format"];
+  if(!caption || caption.trim().length===0 || !typeof(caption)==='string')
+    throw [400,"You must provide a caption"];
+
+
+  postContent=postContent.trim();
+  caption=caption.trim().toLowerCase();
+  tags=tags.trim().toLowerCase();
+
+  const moment = require("moment");
+  let date= moment().format("MM/DD/YYYY");
 
   const postCollection = await posts();
+
   let newPost = {
     postContent: postContent,
     caption: caption,
     tags: tags,
-    email: email,
-    comments: comments,
-    likes:likes
+    date: date,
+    comments: [],
+    likes: []
   }
 
   const insertInfo = await postCollection.insertOne(newPost);
   if (!insertInfo.acknowledged || !insertInfo.insertedId)
-  throw [500,"Could not add new movie"];
+  throw [500,"Could not add new post"];
 
   const newId = insertInfo.insertedId.toString();
   const post = await getPostById(newId.toString());
+
+  const userCollection = await users();
+  const updatedUser = await userCollection.updateOne({_id: ObjectId(userId)}, { $push: { userPosts: newId } });
+
+  if(updatedUser.modifiedCount === 0){
+      throw 'Could not add post to the user list';
+  }
   return post;
 };
-
-
 
 //delete a post by postId
 const deletePost = async (postId) => {
@@ -107,6 +128,6 @@ return resultData;
 module.exports = {
   getAllPosts,
   getPostById,
-  deletePost  ,
+  deletePost,
   createPost
 };
