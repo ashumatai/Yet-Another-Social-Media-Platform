@@ -2,16 +2,11 @@
 const express = require("express");
 const session = require("express-session");
 const exphbs = require("express-handlebars");
-// const BodyParser = require("body-parser");
-const MongoClient = require("mongodb").MongoClient;
-const { ObjectId } = require("mongodb");
-// const configRoutes = require("./routes");
-const { users } = require("./config/mongoCollections");
+const configRoutes = require("./routes");
 
 
 const app = express();
 const static = express.static(__dirname + "/public");
-let database, collection;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,7 +37,7 @@ app.use(async (req, res, next) => {
 
 // MIDDLEWARE ENDS HERE
 
-// configRoutes(app);
+configRoutes(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");
