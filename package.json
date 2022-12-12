@@ -23,6 +23,7 @@
     "url": "https://github.com/ashumatai/Yet-Another-Social-Media-Platform/issues"
   },
   "homepage": "https://github.com/ashumatai/Yet-Another-Social-Media-Platform#readme",
+  
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
