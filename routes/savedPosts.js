@@ -22,5 +22,51 @@ router
         res.status(400).send(e);
       }
     } 
-  })
+  });
+  router
+  .route('/')
+  .post(async (req, res) => {
+    try {
+    
+      if(validatiion.validObjectId(req.body.postId,"ID"));
+      if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
+      req.body.postId = req.body.postId.trim();
+      // trim user id
+      const savedPost = await savedPostData.addsavedPost("63963928ac02e3a9db204155",req.body.postId);
+      // const savedPost = req.body.postId;
+      res.json(savedPost);
+    } 
+    catch (e) {
+      if(typeof(e)==='object'){
+          res.status(404).send(e);       
+      }
+      else{
+        console.log(e);
+        res.status(400).send(e);
+      }
+    } 
+  });
+  router
+  .route('/')
+  .delete(async (req, res) => {
+    try {
+    
+      if(validatiion.validObjectId(req.body.postId,"ID"));
+      if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
+      req.body.postId = req.body.postId.trim();
+      // trim user id
+      const savedPost = await savedPostData.deletesavedPost("63963928ac02e3a9db204155",req.body.postId);
+      // const savedPost = req.body.postId;
+      res.json(savedPost);
+    } 
+    catch (e) {
+      if(typeof(e)==='object'){
+          res.status(404).send(e);       
+      }
+      else{
+        console.log(e);
+        res.status(400).send(e);
+      }
+    } 
+  });
   module.exports = router;
