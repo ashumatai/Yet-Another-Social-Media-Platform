@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongodb");
+const moment = require("moment");
 /**
  * @author Kajol Rajesh Shah <kajol.shsh@gmail.com>
  * */
@@ -56,7 +57,7 @@ const validName = function error_handling_for_name(inputName, inputParameter) {
   if (name.length > 1) {
     throw inputParameter + " should be in valid format";
   } else {
-    let format = /[`0123456789!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    let format = /[`0123456789!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?~]/;
     if (inputName.length < 3 || format.test(inputName)) {
       throw (
         inputParameter +
@@ -150,6 +151,40 @@ const validPhoneNumber = function error_handling_for_phoneNumber(
   if (!mobileFormat.test(inputPhoneNumber))
     throw "Please enter a valid Phone Number";
 };
+
+const validUsername = (username) => {
+  if (!username || typeof username != "string" || username.trim().length === 0)
+    throw `Missing Username`;
+  username = username.trim();
+  const usernameRegex = /^[a-z0-9]{4,}$/i;
+  if (!usernameRegex.test(username)) throw `Invalid Username: The username must be only alphanumeric and have atleast 4 characters`;
+};
+
+const validPassword = (password) => {
+  // INSTRUCTIONS:
+  /**For the password, it must be a valid string (no empty spaces and no spaces but can be any other character
+   * including special characters) and should be at least 6 characters long. If it fails any of those conditions,
+   * you will throw an error.  The constraints for password will be: There needs to be at least one uppercase
+   * character, there has to be at least one number and there has to be at least one special character:
+   * for example:  Not valid: test123, test123$, foobar, tS12$ Valid: Test123$, FooBar123*, HorsePull748*% */
+  if (!password || typeof password != "string" || password.trim().length === 0)
+    throw `Missing Password`;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,}$/;
+  if (!passwordRegex.test(password)) throw `Invalid Password: The password must contain atleast 1 uppercase character, 1 lowercase character, 1 number, 1 special character and be atleast 8 characters long`;
+  return true;
+};
+
+const validDate = (dateString) => {
+  if (!dateString || typeof dateString != "string" || dateString.trim().length === 0)
+  throw `Missing Date`;
+  if (!moment(dateString, 'M/D/YYYY',true).isValid()) throw `Invalid Date`;
+};
+
+const validDOB = (dateString) => {
+  var dobDate = moment().diff(dateString, 'years');
+  if (dobDate < 13) throw  `You must be atleast 13 years of age!`;
+};
+
 module.exports = {
   validObjectId: validObjectId,
   validName: validName,
@@ -158,4 +193,8 @@ module.exports = {
   validLogin: validLogin,
   validEmail: validEmail,
   validPhoneNumber: validPhoneNumber,
+  validUsername,
+  validPassword,
+  validDate,
+  validDOB
 };
