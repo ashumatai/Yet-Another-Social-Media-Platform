@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
-const postData = data.post;
+const postData = data.posts;
 const userData = data.users;
 const commentData = data.comments;
 const {ObjectId} = require('mongodb');
@@ -16,14 +16,14 @@ router.route('/:postId').get(async (req, res) => {
   } 
   try {
     console.log(req.params.postId);
-    await postData.getCommentsByPostId(req.params.postId);
+    await postData.getPostById(req.params.postId);
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: 'Post not found' });
     return;
   }  
   try {
-    let comment = await postData.getCommentsByPostId(req.params.postId);
+    let comment = await commentData.getCommentsByPostId(req.params.postId);
     res.json(comment);
   } catch (e) {
     console.log(e);
@@ -53,7 +53,7 @@ router.route('/:postId').post(async (req, res) => {
     return;
   }
   try {
-    await postData
+    await postData.getPostById(req.params.postId);
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: 'Post not found' });
