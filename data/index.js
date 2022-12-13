@@ -1,3 +1,9 @@
-conversations = require("./conversations");
-posts = require("./posts");
-users = require("./users");
+const conversationData = require("./conversations");
+const postData = require("./posts");
+const userData = require("./users");
+
+module.exports = {
+  userData,
+  postData,
+  conversationData,
+};

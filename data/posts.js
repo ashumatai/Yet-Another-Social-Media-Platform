@@ -1,8 +1,7 @@
 const mongoCollections = require('../config/mongoCollections');
-const posts = mongoCollections.posts;
 const {ObjectId} = require('mongodb');
 const helper = require('../helpers/validations');
-const { posts } = require('./posts');
+const { posts } = require('../config/mongoCollections');
 
 const getAllPosts = async () => {
 
