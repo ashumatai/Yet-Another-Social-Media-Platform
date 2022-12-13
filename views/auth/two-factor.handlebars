@@ -1,22 +1,19 @@
 <main class="form-signin w-100 m-auto">
   <form id="login-form" method="POST" action="/login">
-  <h2 class="h3 mb-3 fw-normal">Please check your email for OTP</h2>
-    <img
-      class="mb-4"
-      src="../../public/images/YASMPFullLogo.png"
-      alt=""
-      width="72"
-      height="57"
-    />
-      <div class="form-floating">
-        <label for="OTPInput">Enter OTP</label>
-        <input class="form-control" name="OTPInput" id="OTPInput" />
-      </div>
-    {{#if error}}
+    <img class="mb-4" src="../../public/images/YASMPFullLogo.png" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Please check your email for OTP</h1>
+
+    <div class="form-floating">
+      <input type="email" class="form-control" id="OTPInput" name="OTPInput" placeholder="name@example.com">
+      <label for="OTPInput">One-Time Password</label>
+    </div>
+        {{#if error}}
       <div class="error-div">
         {{error}}
       </div>
     {{/if}}
     <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+          <a href="/login" class="mt-2">Back to Login</a>
+
   </form>
 </main>
