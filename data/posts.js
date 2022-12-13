@@ -6,15 +6,21 @@ const helper = require('../helpers/validations');
 
 //get all posts of a user
 const getAllPosts = async (userId) => {
-  if (!userId)
-    throw [400,"You must provide an ID"];
+  // if (!userId)
+  //   throw [400,"You must provide an ID"];
   
-  if (typeof userId !== 'string' || userId.trim().length===0)
-    throw [400,"Please provide a valid ID"];
+  // if (typeof userId !== 'string' || userId.trim().length===0)
+  //   throw [400,"Please provide a valid ID"];
   
-  if(!ObjectId.isValid(userId))
-    throw [400,"The ID is not a valid Object ID"];
-
+  // if(!ObjectId.isValid(userId))
+  //   throw [400,"The ID is not a valid Object ID"];
+  try{
+    helper.validString(userId);
+    helper.validObjectId(userId);  
+  }
+  catch(e){
+    throw e;
+  }
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(userId)});
 
@@ -37,12 +43,20 @@ const getAllPosts = async (userId) => {
 
 //get post by postId
 const getPostById = async (postId) => {
-  if (!postId)
-    throw [400,"You must provide an ID"];
-  if (typeof postId !== 'string' || postId.trim().length===0)
-    throw [400,"Please provide a valid ID"];
-  if(!ObjectId.isValid(postId))
-    throw [400,"The ID is not a valid Object ID"];
+  // if (!postId)
+  //   throw [400,"You must provide an ID"];
+  // if (typeof postId !== 'string' || postId.trim().length===0)
+  //   throw [400,"Please provide a valid ID"];
+  // if(!ObjectId.isValid(postId))
+  //   throw [400,"The ID is not a valid Object ID"];
+  try{
+    helper.validString(postId);
+    helper.validObjectId(postId);  
+  }
+  catch(e){
+    throw e;
+  }
+
 
   const postsCollection = await posts();
   const post = await postsCollection.findOne({ _id: ObjectId(postId) });
@@ -56,13 +70,22 @@ const getPostById = async (postId) => {
 
 const createPost = async ( postContent, caption, tags, userId) => {
 
-  if(!postContent) 
-    throw [400,"You must provide an image path"];
+  // if(!postContent) 
+  //   throw [400,"You must provide an image path"];
   // if(!postContent.endsWith('.jpg') || !postContent.endsWith('.jpeg') || !postContent.endsWith('.png'))
   //   throw [400,"You must provide image in proper format"];
-  if(!caption || caption.trim().length===0 || !typeof(caption)==='string')
-    throw [400,"You must provide a caption"];
+  // if(!caption || caption.trim().length===0 || !typeof(caption)==='string')
+  //   throw [400,"You must provide a caption"];
 
+  try{
+    helper.validString(postContent);
+    helper.validString(caption);
+    helper.validString(tags);
+    helper.validObjectId(userId);  
+  }
+  catch(e){
+    throw e;
+  }
 
   postContent=postContent.trim();
   caption=caption.trim().toLowerCase();
