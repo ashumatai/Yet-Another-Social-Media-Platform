@@ -1,0 +1,80 @@
+body{
+    background: linear-gradient(109.6deg, rgb(177, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
+}
+.bg-dark{
+    background-color: black !important;
+    border: none;
+}
+.fa-house, .fa-heart, .fa-gear, .fa-user, .fa-message,.fa-comment,.fa-share,.fa-bookmark{
+    color: white ;
+}
+.navbar-brand{
+    font-size: 27px;
+    font-weight: bold;
+}
+.search{
+    width: 60% !important;
+    border-bottom:1px solid #555 !important; 
+    height: 10% !important;
+}
+.navbar-nav{
+    text-align: right;
+
+}
+.mytabs{
+    display: flex;
+    justify-content: center;
+    /* justify-content: space-between; */
+    
+   
+}
+.mytabs .btn-secondary{
+width: 100%;
+height: 90%;
+color: white;
+background-color: black;
+}
+.card{
+background: linear-gradient(109.6deg, rgb(177, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
+box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+color: white;
+border: none;
+width: 100%;
+height: 100%;
+margin-bottom: 5% !important;
+font-weight: bold;
+}
+.badge .btn{
+border: none;
+}
+.card-img-top{
+width: 100%;
+height: 50%;
+}
+
+
+.userProfile img{
+width: 50px;
+height: 50px;
+background-color: #eee;
+border-radius: 15px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 39px;
+clip-path: circle(50%);
+object-fit: cover;
+}
+.myposts{
+margin-bottom: 5%;
+}
+footer{
+background-color: rgb(177, 173, 219) !important;
+/* background: linear-gradient(109.6deg, rgb(177, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%); */
+
+color: white;
+font-weight: bold;
+}
+.card a {
+    cursor: pointer;
+}
