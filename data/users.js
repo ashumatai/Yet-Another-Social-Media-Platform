@@ -2,6 +2,8 @@ const { ObjectId } = require("mongodb");
 const { users } = require("../config/mongoCollections");
 const bcrypt = require("bcryptjs");
 const saltRounds= 11
+const { badRequestError, internalServerError, notFoundError } = require("../helpers/wrappers");
+const { validEmail, validName, validUsername, validPassword, validDate, validDOB } = require("../helpers/validations");
 
 const getAllUsers = async () => {
   const userCollection = await users();
@@ -44,9 +46,7 @@ const deleteUserById = async (userId) => {
 const getUserByUsername = async (username) => {
   // Validations
   try {
-    const usernameTest = checkUsername(username);
-
-    if (!usernameTest) throw `Invalid username or password`;
+    validUsername(username);
   } catch (err) {
     throw badRequestError(err);
   }
@@ -67,13 +67,13 @@ const getUserByUsername = async (username) => {
 
 const getUserByEmail = async (email) => {
   // Validations
-  // try {
-  //   const emailTest = checkEmail(email);
+  try {
+    const emailTest = validEmail(email);
 
-  //   if (!emailTest) throw `Invalid username or password`;
-  // } catch (err) {
-  //   throw badRequestError(err);
-  // }
+    if (!emailTest) throw `Invalid username or password`;
+  } catch (err) {
+    throw badRequestError(err);
+  }
 
   // Trim inputs
   email = email.trim().toLowerCase();
@@ -91,15 +91,12 @@ const getUserByEmail = async (email) => {
 
 const checkUser = async (email, password) => {
   // Validations
-  // try {
-  //   const emailTest = checkEmail(email);
-  //   const passwordTest = checkPassword(password); // TODO: Confirm if this is encrypted password, if yes, remove this line.
-
-  //   if (!emailTest) throw `The Username is invalid`;
-  //   if (!passwordTest) throw `The Password is invalid`;
-  // } catch (err) {
-  //   throw badRequestError(err);
-  // }
+  try {
+    validEmail(email);
+    validPassword(password);
+  } catch (err) {
+    throw badRequestError(err);
+  }
 
   // Trim inputs
   email = email.trim().toLowerCase();
@@ -121,23 +118,22 @@ const checkUser = async (email, password) => {
 
 const createUser = async (firstnameInput, lastnameInput, DOBInput, usernameInput, emailInput, passwordInput) => {
   // Validations
-  // try {
-  //   const firstnameTest = checkFirstname(firstnameInput);
-  //   const lastnameTest = checkLastname(lastnameInput);
-  //   const DOBTest = checkDOB(DOBInput);
-  //   const emailTest = checkEmail(emailInput);
-  //   const usernameTest = checkUsername(usernameInput);
-  //   const passwordTest = checkPassword(passwordInput); // TODO: Confirm if this is encrypted password, if yes, remove this line.
+  try {
+    validName(firstnameInput);
+    validName(lastnameInput);
+    validDate(DOBInput);
+    validDOB(DOBInput);
+    validEmail(emailInput);
+    validUsername(usernameInput);
+    validPassword(passwordInput);
 
-  //   if (!firstnameTest || !lastnameTest || !DOBTest || !emailTest || !usernameTest || !passwordTest) throw `Invalid username or password`;
-
-  //   const takenUser = await getUserByUsername(username);
-  //   if (takenUser) throw `Username already taken!`;
-  //   const takenEmail = await getUserByEmail(emailInput);
-  //   if (takenEmail) throw `Email already registered to another account!`;
-  // } catch (err) {
-  //   throw badRequestError(err);
-  // }
+    const takenUser = await getUserByUsername(username);
+    if (takenUser) throw `Username already taken!`;
+    const takenEmail = await getUserByEmail(emailInput);
+    if (takenEmail) throw `Email already registered to another account!`;
+  } catch (err) {
+    throw badRequestError(err);
+  }
 
   // Trim inputs
   firstnameInput = firstnameInput.trim();
