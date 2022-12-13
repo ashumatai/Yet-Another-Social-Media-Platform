@@ -6,6 +6,14 @@ const xss = require("xss");
 const dotenv = require("dotenv");
 dotenv.config();
 const { userData } = require("../data");
+const {
+  validEmail,
+  validPassword,
+  validName,
+  validDate,
+  validDOB,
+  validUsername,
+} = require("../helpers/validations");
 
 let otp = "";
 
@@ -58,14 +66,22 @@ router
       if (!req.session.user) {
         return res
           .status(200)
-          .render("auth/login", { title: "Login", partial: "auth-script", css: "auth-css" });
+          .render("auth/login", {
+            title: "Login",
+            partial: "auth-script",
+            css: "auth-css",
+          });
       } else {
         return res.redirect("/home");
       }
     } catch (err) {
       res
         .status(err?.status ?? 500)
-        .render("auth/login", { title: "Login", partial: "auth-script", css: "auth-css" });
+        .render("auth/login", {
+          title: "Login",
+          partial: "auth-script",
+          css: "auth-css",
+        });
     }
   })
   .post(async (req, res) => {
@@ -74,15 +90,15 @@ router
       emailInput = xss(emailInput);
       passwordInput = xss(passwordInput);
 
-      // TODO: Input CHecking
+      validEmail(emailInput);
+      validPassword(passwordInput);
     } catch (err) {
-      res
-        .status(err?.status ?? 400)
-        .render("auth/login", {
-          title: "Login",
-          error: err?.message ?? err,
-          partial: "auth-script", css: "auth-css",
-        });
+      res.status(err?.status ?? 400).render("auth/login", {
+        title: "Login",
+        error: err?.message ?? err,
+        partial: "auth-script",
+        css: "auth-css",
+      });
     }
 
     try {
@@ -95,22 +111,20 @@ router
         req.session.user = existingUser;
         return res.redirect("otp");
       } else {
-        res
-          .status(err?.status ?? 500)
-          .render("auth/login", {
-            title: "Login",
-            error: err?.message ?? err,
-            partial: "auth-script", css: "auth-css",
-          });
-      }
-    } catch (err) {
-      res
-        .status(err?.status ?? 500)
-        .render("auth/login", {
+        res.status(err?.status ?? 500).render("auth/login", {
           title: "Login",
           error: err?.message ?? err,
-          partial: "auth-script", css: "auth-css",
+          partial: "auth-script",
+          css: "auth-css",
         });
+      }
+    } catch (err) {
+      res.status(err?.status ?? 500).render("auth/login", {
+        title: "Login",
+        error: err?.message ?? err,
+        partial: "auth-script",
+        css: "auth-css",
+      });
     }
   });
 
@@ -122,19 +136,22 @@ router
       if (!req.session.user || !req.session.user.verified) {
         return res
           .status(200)
-          .render("auth/signup", { title: "Sign-up", partial: "auth-script", css: "auth-css" });
+          .render("auth/signup", {
+            title: "Sign-up",
+            partial: "auth-script",
+            css: "auth-css",
+          });
       } else {
         return res.redirect("/home");
       }
     } catch (err) {
       console.log(err);
-      res
-        .status(err?.status ?? 500)
-        .render("auth/signup", {
-          title: "Sign-up",
-          partial: "auth-script", css: "auth-css",
-          error: err?.message ?? err,
-        });
+      res.status(err?.status ?? 500).render("auth/signup", {
+        title: "Sign-up",
+        partial: "auth-script",
+        css: "auth-css",
+        error: err?.message ?? err,
+      });
     }
   })
   .post(async (req, res) => {
@@ -147,15 +164,21 @@ router
         emailInput,
         passwordInput,
       } = req.body; // TODO: Input Validation
+      validEmail(emailInput);
+      validName(firstnameInput);
+      validName(lastnameInput);
+      validDate(DOBInput);
+      validDOB(DOBInput);
+      validUsername(usernameInput);
+      validPassword(passwordInput);
     } catch (err) {
-      console.log(err, "Line 150");
-      res
-        .status(err?.status ?? 400)
-        .render("auth/signup", {
-          title: "Sign-up",
-          partial: "auth-script", css: "auth-css",
-          error: err?.message ?? err,
-        });
+      console.log(err, "Line 160");
+      res.status(err?.status ?? 400).render("auth/signup", {
+        title: "Sign-up",
+        partial: "auth-script",
+        css: "auth-css",
+        error: err?.message ?? err,
+      });
     }
     try {
       let {
@@ -182,26 +205,24 @@ router
         passwordInput
       );
       if (!newUser.insertedUser) {
-        console.log(err, "Line 184");
-        res
-          .status(err?.status ?? 500)
-          .render("auth/signup", {
-            title: "Sign-up",
-            partial: "auth-script", css: "auth-css",
-            error: err?.message ?? err,
-          });
+        console.log(err, "Line 194");
+        res.status(err?.status ?? 500).render("auth/signup", {
+          title: "Sign-up",
+          partial: "auth-script",
+          css: "auth-css",
+          error: err?.message ?? err,
+        });
       } else {
         res.redirect("/login");
       }
     } catch (err) {
-      console.log(err, "Line 196");
-      res
-        .status(err?.status ?? 500)
-        .render("auth/signup", {
-          title: "Sign-up",
-          partial: "auth-script", css: "auth-css",
-          error: err?.message ?? err,
-        });
+      console.log(err, "Line 206");
+      res.status(err?.status ?? 500).render("auth/signup", {
+        title: "Sign-up",
+        partial: "auth-script",
+        css: "auth-css",
+        error: err?.message ?? err,
+      });
     }
   });
 
@@ -214,18 +235,18 @@ router
       } else {
         otp = sendEMail(req?.session?.user?.email, req);
 
-        return res
-          .status(200)
-          .render("auth/two-factor", {
-            title: "2 Factor",
-            partial: "auth-script", css: "auth-css"
-          });
+        return res.status(200).render("auth/two-factor", {
+          title: "2 Factor",
+          partial: "auth-script",
+          css: "auth-css",
+        });
       }
     } catch (err) {
-      console.log("Line 226", err);
+      console.log("Line 234", err);
       res.status(err?.status ?? 500).render("auth/two-factor", {
         title: "2 Factor",
-        partial: "auth-script", css: "auth-css",
+        partial: "auth-script",
+        css: "auth-css",
         error: err?.message ?? err,
       });
     }
@@ -234,14 +255,13 @@ router
     try {
       const { OTPInput } = req.body; // TODO: Input Checking
     } catch (err) {
-      console.log("Line 234", err);
-      res
-        .status(err?.status ?? 400)
-        .render("auth/two-factor", {
-          title: "2 Factor",
-          error: err?.message ?? err,
-          partial: "auth-script", css: "auth-css"
-        });
+      console.log("Line 246", err);
+      res.status(err?.status ?? 400).render("auth/two-factor", {
+        title: "2 Factor",
+        error: err?.message ?? err,
+        partial: "auth-script",
+        css: "auth-css",
+      });
     }
 
     try {
@@ -258,21 +278,24 @@ router
         console.log("OTPs:", OTPInput, otp);
       }
     } catch (err) {
-      console.log("Line 255", err);
-      res
-        .status(err?.status ?? 500)
-        .render("auth/two-factor", {
-          title: "2 Factor",
-          error: err?.message ?? err,
-          partial: "auth-script", css: "auth-css"
-        });
+      console.log("Line 270", err);
+      res.status(err?.status ?? 500).render("auth/two-factor", {
+        title: "2 Factor",
+        error: err?.message ?? err,
+        partial: "auth-script",
+        css: "auth-css",
+      });
     }
   });
 
 router.route("/logout").get(async (req, res) => {
   //code here for GET
   req.session.destroy();
-  return res.render("logout", { title: "Logged out", partial: "auth-script", css: "auth-css" });
+  return res.render("logout", {
+    title: "Logged out",
+    partial: "auth-script",
+    css: "auth-css",
+  });
 });
 
 module.exports = router;
