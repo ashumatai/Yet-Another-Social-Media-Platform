@@ -1,28 +1,45 @@
-  <h3>Let's get you started</h3>
-  <form id="registration-form" method="POST" action="/register">
-    <div>
-      <label for="firstnameInput">First Name:</label>
-      <input name="firstnameInput" id="firstnameInput"/>
-      <label for="lastnameInput">Last Name:</label>
-      <input name="lastnameInput" id="lastnameInput"/>
+<main class="form-signin w-100 m-auto">
+  <form id="registration-form" method="POST" action="/signup">
+  <h2 class="h3 mb-3 fw-normal">Let's get you started</h2>
+    <div class="form-floating">
+      <label for="firstnameInput">First Name</label>
+      <input class="form-control" name="firstnameInput" id="firstnameInput" />
     </div>
-    <div>
-      <label for="ageInput">Date of Birth (MM/DD/YYYY):</label>
-      <input name="ageInput" id="ageInput"/>
+    <div class="form-floating">
+            <label for="lastnameInput">Last Name</label>
+      <input class="form-control" name="lastnameInput" id="lastnameInput" />
     </div>
-    <div>
-      <label for="usernameInput">Username:</label>
-      <input name="usernameInput" id="usernameInput"/>
+    <div class="form-floating">
+      <label for="DOBInput" class="col-1 col-form-label">Date</label>
+      {{!-- <div class="col-5">
+        <div class="input-group date" id="datepicker"> --}}
+          <input class="form-control" id="DOBInput" type="date" />
+          {{!-- <span class="input-group-append">
+            <span class="input-group-text bg-light d-block">
+              <i class="fa fa-calendar"></i>
+            </span>
+          </span>
+        </div>
+      </div> --}}
     </div>
-    <div>
-      <label for="passwordInput">Password:</label>
-      <input name="passwordInput" id="passwordInput" type="password"/>
+    <div class="form-floating">
+      <label for="usernameInput">Username</label>
+      <input class="form-control" name="usernameInput" id="usernameInput" />
+    </div>
+    <div class="form-floating">
+      <label for="passwordInput">Password</label>
+      <input class="form-control" name="passwordInput" id="passwordInput" type="password" />
+    </div>
+    <div class="form-floating">
+      <label for="emailInput">Email</label>
+      <input class="form-control" name="emailInput" id="emailInput" type="email" />
     </div>
     {{#if error}}
-    <div>
-      {{error}}
-    </div>
+      <div class="error-div">
+        {{error}}
+      </div>
     {{/if}}
-    <button type="submit">Submit</button>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+    <a href="/login">Already have an account? Click here to log-in</a>
   </form>
-  <a href="/">Already have an account? Click here to log-in</a>
+</main>

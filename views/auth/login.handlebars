@@ -1,18 +1,27 @@
-<h3>Welcome! Sign-in here, YASMP awaits beyond...</h3>
-<form id="login-form" method="POST" action="/login">
-  <div>
-    <label for="usernameInput">Username:</label>
-    <input name="usernameInput" id="usernameInput" />
-  </div>
-  <div>
-    <label for="passwordInput">Password:</label>
-    <input name="passwordInput" id="passwordInput" type="password" />
-  </div>
-  {{#if error}}
-    <div>
-      {{error}}
-    </div>
-  {{/if}}
-  <button type="submit">Submit</button>
-</form>
-<a href="/register">Click here to register!</a>
+<main class="form-signin w-100 m-auto">
+  <form id="login-form" method="POST" action="/login">
+  <h2 class="h3 mb-3 fw-normal">Welcome! Sign-in here, YASMP awaits beyond...</h2>
+    <img
+      class="mb-4"
+      src="../../public/images/YASMPFullLogo.png"
+      alt=""
+      width="72"
+      height="57"
+    />
+      <div class="form-floating">
+        <label for="emailInput">Email address</label>
+        <input class="form-control" name="emailInput" id="emailInput" type="email" />
+      </div>
+      <div class="form-floating">
+        <label for="passwordInput">Password</label>
+        <input class="form-control" name="passwordInput" id="passwordInput" type="password" />
+      </div>
+    {{#if error}}
+      <div class="error-div">
+        {{error}}
+      </div>
+    {{/if}}
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+      <a href="/signup" class="mt-2">Click here to register!</a>
+  </form>
+</main>
