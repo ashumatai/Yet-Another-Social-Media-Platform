@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/public", static);
 
-app.engine("handlebars", handlebarsInstance.engine({ defaultLayout: "main" }));
+app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
 app.use(
@@ -54,6 +54,13 @@ app.use(async (req, res, next) => {
   console.log(`[${dateString}]: ${reqMethod} ${reqRoute}`);
   next();
 });
+
+app.use('/home', async(req, res, next) => {
+  if(!req.session.user || !req.session.user.verified) {
+    res.redirect("/login");
+  }
+  next();
+})
 
 // MIDDLEWARE ENDS HERE
 
