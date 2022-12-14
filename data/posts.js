@@ -6,14 +6,6 @@ const helper = require('../helpers/validations');
 
 //get all posts of a user
 const getAllPosts = async (userId) => {
-  // if (!userId)
-  //   throw [400,"You must provide an ID"];
-  
-  // if (typeof userId !== 'string' || userId.trim().length===0)
-  //   throw [400,"Please provide a valid ID"];
-  
-  // if(!ObjectId.isValid(userId))
-  //   throw [400,"The ID is not a valid Object ID"];
   try{
     helper.validString(userId);
     helper.validObjectId(userId);  
@@ -43,12 +35,6 @@ const getAllPosts = async (userId) => {
 
 //get post by postId
 const getPostById = async (postId) => {
-  // if (!postId)
-  //   throw [400,"You must provide an ID"];
-  // if (typeof postId !== 'string' || postId.trim().length===0)
-  //   throw [400,"Please provide a valid ID"];
-  // if(!ObjectId.isValid(postId))
-  //   throw [400,"The ID is not a valid Object ID"];
   try{
     helper.validString(postId);
     helper.validObjectId(postId);  
@@ -77,17 +63,17 @@ const createPost = async ( postContent, caption, tags, userId) => {
   // if(!caption || caption.trim().length===0 || !typeof(caption)==='string')
   //   throw [400,"You must provide a caption"];
 
-  try{
-    helper.validString(postContent);
-    helper.validString(caption);
-    helper.validString(tags);
-    helper.validObjectId(userId);  
-  }
-  catch(e){
-    throw e;
-  }
+  // try{
+  //   helper.validString(postContent);
+  //   helper.validString(caption);
+  //   helper.validString(tags);
+  //   helper.validObjectId(userId);  
+  // }
+  // catch(e){
+  //   throw e;
+  // }
 
-  postContent=postContent.trim();
+  //postContent=postContent.trim();
   caption=caption.trim().toLowerCase();
   tags=tags.trim().toLowerCase();
 

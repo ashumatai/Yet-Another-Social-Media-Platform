@@ -5,7 +5,7 @@ const exphbs = require("express-handlebars");
 // const BodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const { ObjectId } = require("mongodb");
-// const configRoutes = require("./routes");
+const configRoutes = require("./routes");
 const { users } = require("./config/mongoCollections");
 
 
@@ -42,7 +42,7 @@ app.use(async (req, res, next) => {
 
 // MIDDLEWARE ENDS HERE
 
-// configRoutes(app);
+configRoutes(app);
 
 app.listen(3000, () => {
   console.log("We've now got a server!");

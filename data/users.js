@@ -38,3 +38,9 @@ const deleteUserById = async (userId) => {
     };
     return {"userId": userId, "deleted": true};
 };
+
+
+const updateUser = async () => {
+  const userCollection = await users();
+  
+};
