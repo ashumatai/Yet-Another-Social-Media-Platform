@@ -75,7 +75,7 @@ router
         return res.redirect("/home");
       }
     } catch (err) {
-      res
+      return res
         .status(err?.status ?? 500)
         .render("auth/login", {
           title: "Login",
@@ -93,7 +93,7 @@ router
       validEmail(emailInput);
       validPassword(passwordInput);
     } catch (err) {
-      res.status(err?.status ?? 400).render("auth/login", {
+      return res.status(err?.status ?? 400).render("auth/login", {
         title: "Login",
         error: err?.message ?? err,
         partial: "auth-script",
@@ -111,7 +111,7 @@ router
         req.session.user = existingUser;
         return res.redirect("otp");
       } else {
-        res.status(err?.status ?? 500).render("auth/login", {
+        return res.status(err?.status ?? 500).render("auth/login", {
           title: "Login",
           error: err?.message ?? err,
           partial: "auth-script",
@@ -119,7 +119,7 @@ router
         });
       }
     } catch (err) {
-      res.status(err?.status ?? 500).render("auth/login", {
+      return res.status(err?.status ?? 500).render("auth/login", {
         title: "Login",
         error: err?.message ?? err,
         partial: "auth-script",
@@ -146,7 +146,7 @@ router
       }
     } catch (err) {
       console.log(err);
-      res.status(err?.status ?? 500).render("auth/signup", {
+      return res.status(err?.status ?? 500).render("auth/signup", {
         title: "Sign-up",
         partial: "auth-script",
         css: "auth-css",
@@ -173,7 +173,7 @@ router
       validPassword(passwordInput);
     } catch (err) {
       console.log(err, "Line 160");
-      res.status(err?.status ?? 400).render("auth/signup", {
+      return res.status(err?.status ?? 400).render("auth/signup", {
         title: "Sign-up",
         partial: "auth-script",
         css: "auth-css",
@@ -206,18 +206,18 @@ router
       );
       if (!newUser.insertedUser) {
         console.log(err, "Line 194");
-        res.status(err?.status ?? 500).render("auth/signup", {
+        return res.status(err?.status ?? 500).render("auth/signup", {
           title: "Sign-up",
           partial: "auth-script",
           css: "auth-css",
           error: err?.message ?? err,
         });
       } else {
-        res.redirect("/login");
+        return res.redirect("/login");
       }
     } catch (err) {
       console.log(err, "Line 206");
-      res.status(err?.status ?? 500).render("auth/signup", {
+      return res.status(err?.status ?? 500).render("auth/signup", {
         title: "Sign-up",
         partial: "auth-script",
         css: "auth-css",
@@ -243,7 +243,7 @@ router
       }
     } catch (err) {
       console.log("Line 234", err);
-      res.status(err?.status ?? 500).render("auth/two-factor", {
+      return res.status(err?.status ?? 500).render("auth/two-factor", {
         title: "2 Factor",
         partial: "auth-script",
         css: "auth-css",
@@ -256,7 +256,7 @@ router
       const { OTPInput } = req.body; // TODO: Input Checking
     } catch (err) {
       console.log("Line 246", err);
-      res.status(err?.status ?? 400).render("auth/two-factor", {
+      return res.status(err?.status ?? 400).render("auth/two-factor", {
         title: "2 Factor",
         error: err?.message ?? err,
         partial: "auth-script",
@@ -273,13 +273,13 @@ router
           ...req.session.user,
           verified: true,
         };
-        res.status(200).redirect("/home"); // Homepage
+        return res.status(200).redirect("/home"); // Homepage
       } else {
         console.log("OTPs:", OTPInput, otp);
       }
     } catch (err) {
       console.log("Line 270", err);
-      res.status(err?.status ?? 500).render("auth/two-factor", {
+      return res.status(err?.status ?? 500).render("auth/two-factor", {
         title: "2 Factor",
         error: err?.message ?? err,
         partial: "auth-script",
