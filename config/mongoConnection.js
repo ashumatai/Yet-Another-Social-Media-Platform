@@ -1,7 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const settings = require('./settings');
 const dotenv = require("dotenv");
-const mongoConfig = settings.mongoConfig;
 
 dotenv.config();
 let _connection = undefined;
