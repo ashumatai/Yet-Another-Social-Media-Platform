@@ -1,6 +1,11 @@
 const express = require("express");
-const { users } = require("../config/mongoCollections");
-const { getAllUsers, getUserById, deleteUserById, updateUserById } = require("../data/users");
+const { posts } = require("../config/mongoCollections");
+const {
+  // getAllUsers,
+  getUserById,
+  deleteUserById,
+  updateUserById,
+} = require("../data/users");
 const {
   validObjectId,
   validString,
@@ -10,15 +15,16 @@ const {
 } = require("../helpers/validations");
 const router = express.Router();
 const xss = require("xss");
+const { ObjectId } = require("mongodb");
 
-router.route("/").get(async (req, res) => {
-  try {
-    const allUsers = await getAllUsers();
-    res.json(allUsers);
-  } catch (error) {
-    res.status(error.code).send(error.message);
-  }
-});
+// router.route("/").get(async (req, res) => {
+//   try {
+//     const allUsers = await getAllUsers();
+//     res.json(allUsers);
+//   } catch (error) {
+//     res.status(error.code).send(error.message);
+//   }
+// });
 
 router.route("/:userId").get(async (req, res) => {
   try {
@@ -26,12 +32,26 @@ router.route("/:userId").get(async (req, res) => {
   } catch (error) {
     res.status(400).send(error);
   }
-
   try {
-    const userById = await getUserById(req.params.userId);
-    res.json(userById);
+    const user = await getUserById(req.params.userId);
+    const postsCollection = await posts();
+    const allUserPosts = [];
+
+    if(!user.userPosts.length) 
+      throw {message: "User has no posts yet!", code: 404};
+    for (const postId of user.userPosts) {
+      const post = await postsCollection.findOne({_id: ObjectId(postId)});
+      allUserPosts.push(post.postContent);
+    }
+
+    res.render("userPage", {
+      title: user.userName,
+      userPosts: allUserPosts,
+    });
+    
   } catch (error) {
-    res.status(error.code).send(error.message);
+    // console.log(error);
+    // res.status(error.code).send(error.message);
   }
 });
 
@@ -103,9 +123,20 @@ router.route("/:userId").put(async (req, res) => {
   }
 
   try {
-    const updatedUser = await updateUserById(req.params.id, xss(user.userName), xss(user.firstName), xss(user.lastName), xss(user.address), xss(user.city), xss(user.state), xss(user.email), xss(user.phoneNumber), xss(user.dateOfBirth), xss(user.age));
+    const updatedUser = await updateUserById(
+      req.params.id,
+      xss(user.userName),
+      xss(user.firstName),
+      xss(user.lastName),
+      xss(user.address),
+      xss(user.city),
+      xss(user.state),
+      xss(user.email),
+      xss(user.phoneNumber),
+      xss(user.dateOfBirth),
+      xss(user.age)
+    );
     res.json(updatedUser);
-
   } catch (error) {
     res.status(400).send(error);
   }

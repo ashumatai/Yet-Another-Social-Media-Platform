@@ -7,13 +7,13 @@ const followersData = require('../data/followers');
 const {ObjectId} = require('mongodb');
 const validatiion = require('../helpers/validations');
   router
-  .route('/:userId')
+  .route('/')
   .get(async (req, res) => {
     try {
     
-      if(validatiion.validObjectId(req.params.userId,"ID"));
-      req.params.userId = req.params.userId.trim();
-      const followers = await followersData.getFollowers(req.params.userId);
+      if(validatiion.validObjectId("639518baec8160da0010d848","ID"));
+      // req.params.userId = req.params.userId.trim();
+      const followers = await followersData.getFollowers("639518baec8160da0010d848");
       res.json(followers);
     } 
     catch (e) {

@@ -78,3 +78,8 @@ font-weight: bold;
 .card a {
     cursor: pointer;
 }
+
+.userPosts {
+    width: 100%;
+    height: 100%;
+}

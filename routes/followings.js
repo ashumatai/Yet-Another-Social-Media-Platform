@@ -4,13 +4,13 @@ const followingsData = require('../data/followings');
 const {ObjectId} = require('mongodb');
 const validatiion = require('../helpers/validations');
   router
-  .route('/:userId')
+  .route('/')
   .get(async (req, res) => {
     try {
     
-      if(validatiion.validObjectId(req.params.userId,"ID"));
-      req.params.userId = req.params.userId.trim();
-      const followings = await followingsData.getFollowings(req.params.userId);
+      if(validatiion.validObjectId("639518baec8160da0010d848","ID"));
+      // req.params.userId = req.params.userId.trim();
+      const followings = await followingsData.getFollowings("639518baec8160da0010d848");
       res.json(followings);
     } 
     catch (e) {
