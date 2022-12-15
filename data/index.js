@@ -1,9 +1,14 @@
-const conversationData = require("./conversations");
-const postData = require("./posts");
-const userData = require("./users");
-
+const conversations = require("./conversations");
+const posts = require("./posts");
+const users = require("./users");
+const savedPost = require("./savedPosts");
+const home = require("./home");
+const likes = require("./likes")
 module.exports = {
-  userData,
-  postData,
-  conversationData,
+    posts,
+    users,
+    savedPost,
+    conversations,
+    home,
+    likes
 };

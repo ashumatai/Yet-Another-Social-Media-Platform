@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 const xss = require("xss");
 const dotenv = require("dotenv");
 dotenv.config();
-const { userData } = require("../data");
+const { users: userData } = require("../data");
 const {
   validEmail,
   validPassword,

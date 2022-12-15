@@ -1,0 +1,116 @@
+{{! @author Gundeep Singh Saluja <gssaluja77@gmail.com> }}
+
+    {{! Navbar }}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">YASMP</a>
+        <form class="form-inline">
+            <input class="form-control mr-sm-2 search" type="search" placeholder="Search.." aria-label="Search" />
+        </form>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-house fa-md"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-user fa-md"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-message fa-md"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    {{! User profile pic and username }}
+
+    <div class="d-flex flex-row align-items-center">
+        <div class="userProfile"><img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAYhFkNrmRfN1VFDiPc-H-l2FEm5MRs2raw&usqp=CAU"
+                alt="..." /></div>
+        <div class="ms-2 ml-2">
+            <h6 class="mb-0">{{userName}}</h6>
+            <span>{{date}}</span>
+        </div>
+    </div>
+    <!-- Buttons triggering modal -->
+
+    <div class="container mytabs mt-4 mb-3">
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4">
+                <button id="followerBtn" class="btn btn-primary" data-toggle="modal"
+                    data-target="#followerModal">Followers</button>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4">
+                <button id="followingBtn" class="btn btn-primary" data-toggle="modal"
+                    data-target="#followingModal">Following</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Followers -->
+    <div class="modal fade" id="followerModal" tabindex="-1" role="dialog" aria-labelledby="followerModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="followerModalTitle">Followers List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Following -->
+    <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="followingModalTitle">Following List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{! Posts }}
+
+    <div class="container mytabs mt-4 mb-3">
+        <div class="row">
+            {{#each userPosts}}
+            <div class="col-xs-4 col-sm-4 col-md-4">
+                <a href=""><img src={{this}} class="userPosts" alt="..." /></a>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <footer class="footer fixed-bottom text-center text-lg-start">
+
+        <div class="text-center p-3">
+            © 2022 Copyright:
+            <a class="text-light" href="#">TEAM YASMP</a>
+        </div>
+
+    </footer>
