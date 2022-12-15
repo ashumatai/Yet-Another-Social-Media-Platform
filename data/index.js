@@ -1,14 +1,14 @@
-conversations = require("./conversations");
-posts = require("./posts");
-users = require("./users");
-savedPost = require("./savedPosts");
-home = require("./home");
-likes = require("./likes")
+const conversations = require("./conversations");
+const posts = require("./posts");
+const users = require("./users");
+const savedPost = require("./savedPosts");
+const home = require("./home");
+const likes = require("./likes")
 module.exports = {
-    posts:posts,
-    users:users,
-    savedPost:savedPost,
-    conversations:conversations,
-    home:home,
-    likes:likes
+    posts,
+    users,
+    savedPost,
+    conversations,
+    home,
+    likes
 };
