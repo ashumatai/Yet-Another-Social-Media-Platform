@@ -5,6 +5,7 @@ const homeRoutes= require('./home');
 const likesRoutes = require('./likes');
 const followerRoutes = require("./followers");
 const followingRoutes = require("./followings");
+const comments= require("./comments");
 const multer = require("multer");
 const path = require('path');
 var fs = require('fs');
@@ -27,6 +28,7 @@ const constructorMethod = (app) => {
   app.use('/savedPosts', savedPostsRoutes);
   app.use('/home', homeRoutes);
   app.use('/likes', likesRoutes);
+  app.use('/comments', comments);
 
   app.post("/uploadImage", (req, res) => {
     uploadImage(req, res, function (e) {
