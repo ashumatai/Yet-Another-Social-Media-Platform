@@ -28,11 +28,19 @@ const getsavedPost = async (userId) => {
     userId = userId.trim();
     postId = postId.trim();
     const userscollection = await users();
-    const user_data = await userscollection.updateOne({_id: ObjectId(userId)},{$push:{"savedPosts":postId}});
-    if(user_data.modifiedCount === 0){
-      throw 'Could not save the post successfully';
+    const postscollection = await posts();
+    const postExists = await postscollection.findOne({_id: ObjectId(postId)});
+    if(postExists === null){
+      return false;
     }
-    return true; 
+    else{
+      const user_data = await userscollection.updateOne({_id: ObjectId(userId)},{$push:{"savedPosts":postId}});
+      if(user_data.modifiedCount === 0){
+        throw 'Could not save the post successfully';
+      }
+      return true; 
+    }
+   
   };
   const deletesavedPost = async (userId,postId) => {
     if(validatiion.validObjectId(userId,"ID"));
@@ -40,11 +48,19 @@ const getsavedPost = async (userId) => {
     userId = userId.trim();
     postId = postId.trim();
     const userscollection = await users();
-    const user_data = await userscollection.updateOne({_id: ObjectId(userId)},{$pull:{"savedPosts":postId}});
-    if(user_data.modifiedCount === 0){
-      throw 'Could not delete saved post successfully';
+    const postscollection = await posts();
+    const postExists = await postscollection.findOne({_id: ObjectId(postId)});
+    if(postExists === null){
+      return false;
     }
-    return true; 
+    else{
+      const user_data = await userscollection.updateOne({_id: ObjectId(userId)},{$pull:{"savedPosts":postId}});
+      if(user_data.modifiedCount === 0){
+        throw 'Could not delete saved post successfully';
+      }
+      return true;
+    }
+     
   };
 
 
