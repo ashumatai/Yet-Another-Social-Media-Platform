@@ -12,10 +12,13 @@ const postComment = async (postId, userId, commentContent) => {
     helper.validString(userId);
     helper.validObjectId(userId); 
     helper.validString(commentContent);
+    commentContent= commentContent.trim().toLowerCase();
+    if(commentContent.length>20){
+      throw [400,'Comments length can not exceed 20 characters'];
+  }
 
   }
   catch(e){
-    console.log("here");
     console.log(e);
     throw e;
   }
