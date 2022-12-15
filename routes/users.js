@@ -41,7 +41,7 @@ router.route("/:userId").get(async (req, res) => {
       throw {message: "User has no posts yet!", code: 404};
     for (const postId of user.userPosts) {
       const post = await postsCollection.findOne({_id: ObjectId(postId)});
-      allUserPosts.push(post.postContent);
+      allUserPosts.push(post);
     }
 
     res.render("userPage", {
