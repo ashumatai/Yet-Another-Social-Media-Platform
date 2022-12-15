@@ -1,5 +1,6 @@
 const userRoutes = require('./users');
 const postsRoutes= require('./posts');
+const authRoutes = require("./authRoutes");
 const savedPostsRoutes= require('./savedPosts');
 const homeRoutes= require('./home');
 const likesRoutes = require('./likes');
@@ -19,8 +20,8 @@ var storage = multer.diskStorage({
   },
 });
 var uploadImage = multer({storage:storage}).single("postContent");
-
 const constructorMethod = (app) => {
+  app.use('/', authRoutes);
   app.use('/users', userRoutes);
   app.use('/posts', postsRoutes);
   app.use('/followers', followerRoutes);
