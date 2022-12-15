@@ -28,19 +28,31 @@
 
     {{! User profile pic and username }}
 
-    <div class="d-flex flex-row align-items-center">
-        <div class="userProfile"><img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAYhFkNrmRfN1VFDiPc-H-l2FEm5MRs2raw&usqp=CAU"
-                alt="..." /></div>
-        <div class="ms-2 ml-2">
-            <h6 class="mb-0">{{userName}}</h6>
-            <span>{{date}}</span>
+    {{!-- <div class="d-flex justify-content-between">
+        <div class="d-flex flex-row align-items-center">
+            <div class="userProfile"><img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAYhFkNrmRfN1VFDiPc-H-l2FEm5MRs2raw&usqp=CAU"
+                    alt="...">
+            </div>
+            <div class="ms-2 ml-2 ">
+                <h6 class="mb-0">{{userName}}</h6> <span>{{date}}</span>
+            </div>
         </div>
-    </div>
+        <div class="badge"> <span>{{tags}}</span> </div>
+    </div> --}}
     <!-- Buttons triggering modal -->
 
     <div class="container mytabs mt-4 mb-3">
         <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4">
+                <div class="userProfile"><img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAYhFkNrmRfN1VFDiPc-H-l2FEm5MRs2raw&usqp=CAU"
+                        alt="...">
+                </div>
+                <div class="ms-2 mr-2">
+                    <h6 class="mb-0">Gundeep</h6> <span>{{date}}</span>
+                </div>
+            </div>
             <div class="col-xs-4 col-sm-4 col-md-4">
                 <button id="followerBtn" class="btn btn-primary" data-toggle="modal"
                     data-target="#followerModal">Followers</button>
@@ -48,6 +60,43 @@
             <div class="col-xs-4 col-sm-4 col-md-4">
                 <button id="followingBtn" class="btn btn-primary" data-toggle="modal"
                     data-target="#followingModal">Following</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="editProfileContainer" class="row">
+            <button id="editProfileBtn" class="btn btn-primary" data-target="#editProfileModal" data-toggle="modal">Edit
+                Profile</button>
+        </div>
+    </div>
+
+    <!-- Modal for Edit Profile -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalTitle">Edit Profile here:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="PUT" action="/">
+                        <label for="usernameInput">Change Username: </label>
+                        <input class="form-control mr-sm-2" placeholder="Enter here...">
+                        <br>
+                        <label for="emailInput">Change Email: </label>
+                        <input class="form-control mr-sm-2" placeholder="Enter here...">
+                        <br>
+                        <label for="profilePicInput">Change Profile Pic:: </label>
+                        <input class="form-control mr-sm-2" type="file" placeholder="Enter here...">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -66,9 +115,9 @@
                 <div class="modal-body">
 
                 </div>
-                <div class="modal-footer">
+                {{!-- <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -87,9 +136,9 @@
                 <div class="modal-body">
 
                 </div>
-                <div class="modal-footer">
+                {{!-- <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -100,7 +149,7 @@
         <div class="row">
             {{#each userPosts}}
             <div class="col-xs-4 col-sm-4 col-md-4">
-                <a href=""><img src={{this}} class="userPosts" alt="..." /></a>
+                <a href=""><img src={{this.postContent}} class="userPosts" alt="..." /></a>
             </div>
             {{/each}}
         </div>
