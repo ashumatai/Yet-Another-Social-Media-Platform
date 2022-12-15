@@ -3,12 +3,14 @@ posts = require("./posts");
 users = require("./users");
 savedPost = require("./savedPosts");
 home = require("./home");
-likes = require("./likes")
+likes = require("./likes");
+filters = require("./filters");
 module.exports = {
     posts:posts,
     users:users,
     savedPost:savedPost,
     conversations:conversations,
     home:home,
-    likes:likes
+    likes:likes,
+    filters:filters
 };
