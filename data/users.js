@@ -70,8 +70,6 @@ const getUserByEmail = async (email) => {
   // Validations
   try {
     const emailTest = validEmail(email);
-
-    if (!emailTest) throw `Invalid username or password`;
   } catch (err) {
     throw badRequestError(err);
   }
@@ -248,7 +246,7 @@ module.exports = {
   getUserByEmail,
   getUserById,
   deleteAllUsers,
-  getAllUsers,
+  // getAllUsers,
   createUser,
   deleteUserById,
   updateUserById,
