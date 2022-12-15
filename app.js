@@ -47,6 +47,7 @@ app.use(
 
 // MIDDLEWARE GOES BELOW:
 
+// LOGGING MIDDLEWARE
 app.use(async (req, res, next) => {
   const dateString = new Date().toUTCString();
   const reqMethod = req.method;
@@ -55,12 +56,23 @@ app.use(async (req, res, next) => {
   next();
 });
 
+// MIDDLEWARE FOR HOME PAGE, ADD SIMILAR MIDDLEWARES FOR ALL PAGES THAT REQUIRE AUTHENTICATION
 app.use('/home', async(req, res, next) => {
   if(!req.session.user || !req.session.user.verified) {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   next();
 })
+
+// MIDDLEWARE FOR BASE ROUTE
+// app.use('/', async(req,res, next) => {
+//   if(!req.session.user || !req.session.user.verified) {
+//     return res.redirect("/login");
+//   } else {
+//     return res.redirect("/home");
+//   }
+//   next();
+//   })
 
 // MIDDLEWARE ENDS HERE
 
