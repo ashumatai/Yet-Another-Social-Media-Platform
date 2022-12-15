@@ -253,6 +253,7 @@ router
   })
   .post(async (req, res) => {
     try {
+      console.log("OTP POST REQ session:", req.session);
       const { OTPInput } = req.body; // TODO: Input Checking
     } catch (err) {
       console.log("Line 246", err);
