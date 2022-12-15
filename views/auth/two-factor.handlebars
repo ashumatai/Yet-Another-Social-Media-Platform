@@ -1,0 +1,20 @@
+<main class="form-signin w-100 m-auto">
+  <form id="login-form" method="POST" action="/otp">
+    <img class="mb-4" src="../../public/images/YASMPFullLogo.png" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Please check your email for OTP</h1>
+
+    <div class="form-floating">
+      <input class="form-control" id="OTPInput" name="OTPInput" placeholder="otp">
+      <label for="OTPInput">One-Time Password</label>
+    </div>
+    <br>
+        {{#if error}}
+      <div class="error-div">
+        {{error}}
+      </div>
+    {{/if}}
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+          <a href="/login" class="mt-2">Back to Login</a>
+
+  </form>
+</main>

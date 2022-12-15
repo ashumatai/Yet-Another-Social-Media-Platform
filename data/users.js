@@ -1,10 +1,9 @@
 const { ObjectId } = require("mongodb");
 const { users } = require("../config/mongoCollections");
-const {
-  validObjectId,
-  validString,
-  validAge,
-} = require("../helpers/validations");
+const bcrypt = require("bcryptjs");
+const saltRounds= 11
+const { badRequestError, internalServerError, notFoundError } = require("../helpers/wrappers");
+const { validEmail, validName, validUsername, validPassword, validDate, validDOB, validString, validAge, validObjectId } = require("../helpers/validations");
 
 // const getAllUsers = async () => {
 //   const userCollection = await users();
@@ -43,6 +42,133 @@ const deleteUserById = async (userId) => {
       code: 404,
     };
   return { userId: userId, deleted: true };
+};
+
+const getUserByUsername = async (username) => {
+  // Validations
+  try {
+    validUsername(username);
+  } catch (err) {
+    throw badRequestError(err);
+  }
+
+  // Trim inputs
+  username = username.trim().toLowerCase();
+  
+  // Mongo Collection operations
+  try {
+    const userCollection = await user_collection();
+    const user = await userCollection.findOne({ username: username });
+    if (!user || user === null) return false;
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getUserByEmail = async (email) => {
+  // Validations
+  try {
+    const emailTest = validEmail(email);
+  } catch (err) {
+    throw badRequestError(err);
+  }
+
+  // Trim inputs
+  email = email.trim().toLowerCase();
+
+  // Mongo Collection operations
+  try {
+    const userCollection = await users();
+    const user = await userCollection.findOne({ email: email });
+    if (!user || user === null) return false;
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const checkUser = async (email, password) => {
+  // Validations
+  try {
+    validEmail(email);
+    validPassword(password);
+  } catch (err) {
+    throw badRequestError(err);
+  }
+
+  // Trim inputs
+  email = email.trim().toLowerCase();
+
+  // Mongo Collection operations
+  try {
+    const existingUser = await getUserByEmail(email);
+
+    if (!existingUser) throw badRequestError("Either the email or password is invalid");
+
+    const comparePasswords = await bcrypt.compare(password, existingUser.hashedPassword);
+    if (comparePasswords) {
+      return existingUser;
+    } else throw badRequestError("Either the email or password is invalid");
+  } catch (err) {
+    throw err;
+  }
+};
+
+const createUser = async (firstnameInput, lastnameInput, DOBInput, usernameInput, emailInput, passwordInput) => {
+  // Validations
+  try {
+    validName(firstnameInput);
+    validName(lastnameInput);
+    validDate(DOBInput);
+    validDOB(DOBInput);
+    validEmail(emailInput);
+    validUsername(usernameInput);
+    validPassword(passwordInput);
+
+    const takenUser = await getUserByUsername(username);
+    if (takenUser) throw `Username already taken!`;
+    const takenEmail = await getUserByEmail(emailInput);
+    if (takenEmail) throw `Email already registered to another account!`;
+  } catch (err) {
+    throw badRequestError(err);
+  }
+
+  // Trim inputs
+  firstnameInput = firstnameInput.trim();
+  lastnameInput = lastnameInput.trim();
+  DOBInput = DOBInput.trim();
+  emailInput = emailInput.trim().toLowerCase();
+  usernameInput = usernameInput.trim().toLowerCase();
+
+  // Mongo Collection operations and password hashing
+  try {
+    const hash = await bcrypt.hash(passwordInput, saltRounds);
+    const userCollection = await users();
+    let newUser = {
+      username: usernameInput,
+      hashedPassword: hash,
+      lastName: lastnameInput,
+      firstName: firstnameInput,
+      email: emailInput,
+      dateOfBirth: DOBInput,
+      profilePicture: null,
+      followers: [],
+      following: [],
+      savedPosts: [],
+      userPosts: [],
+      followRequests: [],
+      directMessageIds: []
+    };
+
+    const insertInfo = await userCollection.insertOne(newUser);
+    if (!insertInfo.acknowledged || !insertInfo.insertedId)
+      throw internalServerError("Could not add user");
+  
+    return {insertedUser: true};
+  } catch (err) {
+    throw err;
+  }
 };
 
 const updateUserById = async (
@@ -114,10 +240,14 @@ const updateUserById = async (
   }
 };
 
+
 module.exports = {
-  // getAllUsers,
+  checkUser,
+  getUserByEmail,
   getUserById,
   deleteAllUsers,
+  // getAllUsers,
+  createUser,
   deleteUserById,
   updateUserById,
 };
