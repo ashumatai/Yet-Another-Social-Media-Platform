@@ -33,8 +33,6 @@ router.route('/:postId').get(async (req, res) => {
   
 router.route('/:postId').post(async (req, res) => {
 
-  console.log("i'm here")
-
   let commentInfo = req.body;
   console.log(commentInfo);
   console.log(req.params.postId);
@@ -44,6 +42,10 @@ router.route('/:postId').post(async (req, res) => {
     helper.validString(req.params.postId);
     helper.validObjectId('639518baec8160da0010d848'); 
     helper.validString(commentInfo.commentContent);
+    commentInfo.commentContent= commentInfo.commentContent.trim().toLowerCase();
+    if(commentInfo.commentContent.length>20){
+      throw [400,'Comments length can not exceed 20 characters'];
+  }
   } catch(e){
       console.log(e);
       throw e;
