@@ -11,18 +11,23 @@ const validatiion = require('../helpers/validations');
   .route('/')
   .post(async (req, res) => {
     try {
-    
+      let userId = req.session.user._id.toString();
+      userId = userId.trim();
+      if(validatiion.validString(userId,"ID"));
+      if(validatiion.validObjectId(userId,"ID"));
       if(validatiion.validObjectId(req.body.postId,"ID"));
-      if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
       req.body.postId = req.body.postId.trim();
       // trim user id
-      const addedLikes = await likesData.addLikes("63963928ac02e3a9db204155",req.body.postId);
+      const addedLikes = await likesData.addLikes(userId,req.body.postId);
       // const savedPost = req.body.postId;
       res.json(addedLikes);
     } 
     catch (e) {
       if(typeof(e)==='object'){
           res.status(404).send(e);       
+      }
+      else if(typeof(e)==='number'){
+        res.status(500).send("Cannot like the post");
       }
       else{
         // console.log(e);
@@ -35,11 +40,15 @@ const validatiion = require('../helpers/validations');
   .delete(async (req, res) => {
     try {
     
+      let userId = req.session.user._id.toString();
+      userId = userId.trim();
+      if(validatiion.validString(userId,"ID"));
+      if(validatiion.validObjectId(userId,"ID"));
       if(validatiion.validObjectId(req.body.postId,"ID"));
-      if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
+      req.body.postId = req.body.postId.trim();
       req.body.postId = req.body.postId.trim();
       // trim user id
-      const deletedLikes = await likesData.deleteLikes("63963928ac02e3a9db204155",req.body.postId);
+      const deletedLikes = await likesData.deleteLikes(userId,req.body.postId);
       // const savedPost = req.body.postId;
       res.json(deletedLikes);
     } 
@@ -47,8 +56,11 @@ const validatiion = require('../helpers/validations');
       if(typeof(e)==='object'){
           res.status(404).send(e);       
       }
+      else if(typeof(e)==='number'){
+        res.status(500).send("Cannot unlike the post");
+      }
       else{
-        console.log(e);
+        // console.log(e);
         res.status(400).send(e);
       }
     } 

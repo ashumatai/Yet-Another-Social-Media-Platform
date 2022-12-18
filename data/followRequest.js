@@ -44,7 +44,7 @@ const {ObjectId} = require('mongodb');
     }
     const addedToFollowers = await userscollection.updateOne({_id: ObjectId(userId)},{$push:{"followers":acceptedId}});
     if(addedToFollowers.modifiedCount === 0){
-        throw 'Could not add to followings list successfully';
+        throw 1;
     }
     return true;
     
@@ -61,7 +61,7 @@ const {ObjectId} = require('mongodb');
     if(declinedUser === null) return false;
     const removedFromFolloweRequest = await userscollection.updateOne({_id: ObjectId(userId)},{$pull:{"followRequests":declinedId}});
     if(removedFromFolloweRequest.modifiedCount === 0){
-        throw 'Could not remove user from followeRequest List successfully';
+        throw 1;
     }
     return true;
     

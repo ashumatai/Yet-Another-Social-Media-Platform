@@ -21,7 +21,7 @@ const {ObjectId} = require('mongodb');
     else{
       const post_data = await postscollection.updateOne({_id: ObjectId(postId)},{$push:{"likes":userId}});
       if(post_data.modifiedCount === 0){
-        throw 'Could not like the post successfully';
+        throw 1;
       }
       const likeLength = await postscollection.findOne({_id: ObjectId(postId)});
       return {"added":true,"likes":likeLength.likes.length};
@@ -41,7 +41,7 @@ const {ObjectId} = require('mongodb');
     else{
       const post_data = await postscollection.updateOne({_id: ObjectId(postId)},{$pull:{"likes":userId}});
       if(post_data.modifiedCount === 0){
-        throw 'Could not delete liked post successfully';
+        throw 1;
       }
       const likeLength = await postscollection.findOne({_id: ObjectId(postId)});
       return {"deleted":true,"likes":likeLength.likes.length};

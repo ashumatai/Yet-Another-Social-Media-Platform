@@ -15,8 +15,33 @@ const getsavedPost = async (userId) => {
     const user_data = await userscollection.findOne({_id: ObjectId(userId)});
     if(user_data === null) throw {error:'No user found with '+userId};
     const savedPostData = user_data.savedPosts;
-    for (const data of savedPostData) {
-      postData.push(await postscollection.findOne({_id: ObjectId(data)}));
+    
+    if(savedPostData.length !=0 ){
+      for (const data of savedPostData) {
+        let eachPost = await postscollection.findOne({_id:ObjectId(data)});
+        if(eachPost === null ){
+          return false;
+        }
+        eachPost.savedPosts = true;
+        if(eachPost.likes.length!=0){
+          eachPost.noOfLikes = eachPost.likes.length;
+          if(eachPost.likes.includes(userId)){
+            eachPost.hasLiked = true;
+          }
+        }
+        
+          let getuserInfo = await userscollection.findOne({userPosts:eachPost._id.toString()});
+          if(getuserInfo === null ){
+            return false;
+          }
+          eachPost.userName = getuserInfo.userName;
+          eachPost.profilePicture = getuserInfo.profilePicture;
+        
+        postData.push(eachPost);
+      }
+    }
+    else{
+      return false;
     }
     if(postData.length===0) throw {error:'No saved posts found  '+userId};
     return postData; 
@@ -36,7 +61,7 @@ const getsavedPost = async (userId) => {
     else{
       const user_data = await userscollection.updateOne({_id: ObjectId(userId)},{$push:{"savedPosts":postId}});
       if(user_data.modifiedCount === 0){
-        throw 'Could not save the post successfully';
+        throw 1;
       }
       return true; 
     }
@@ -56,7 +81,7 @@ const getsavedPost = async (userId) => {
     else{
       const user_data = await userscollection.updateOne({_id: ObjectId(userId)},{$pull:{"savedPosts":postId}});
       if(user_data.modifiedCount === 0){
-        throw 'Could not delete saved post successfully';
+        throw 1;
       }
       return true;
     }

@@ -4,16 +4,19 @@ const followingsData = require('../data/followings');
 const {ObjectId} = require('mongodb');
 const validatiion = require('../helpers/validations');
   router
-  .route('/:userId')
+  .route('/')
   .get(async (req, res) => {
     try {
     
-      if(validatiion.validObjectId(req.params.userId,"ID"));
-      req.params.userId = req.params.userId.trim();
-      const followings = await followingsData.getFollowings(req.params.userId);
+      let userId = req.session.user._id.toString();
+      userId = userId.trim();
+      if(validatiion.validString(userId,"ID"));
+      if(validatiion.validObjectId(userId,"ID"));
+      const followings = await followingsData.getFollowings(userId);
       res.json(followings);
     } 
     catch (e) {
+      console.log(e);
       if(typeof(e)==='object'){
           res.status(404).send(e);       
       }
