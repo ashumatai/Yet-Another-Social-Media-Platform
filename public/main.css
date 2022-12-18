@@ -94,3 +94,8 @@ font-weight: bold;
 #editProfileContainer {
     justify-content: center;
 }
+
+#username {
+    color: blueviolet;
+    font-weight: bolder;
+}

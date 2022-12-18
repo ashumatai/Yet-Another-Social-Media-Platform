@@ -19,7 +19,21 @@ const {ObjectId} = require('mongodb');
     if(followersAllData.length === 0) throw {error:'No Followers found for  '+userId};
     return followersAllData; 
   };
+
+  const follow = async (senderId, receiverId) => {
+    validatiion.validObjectId(senderId, "ID");
+    validatiion.validObjectId(receiverId, "ID");
+  
+    const userCollection = await users();
+    const updatedInfo = await userCollection.updateOne(
+      { _id: ObjectId(receiverId) },
+      { $push: { followRequests: senderId } }
+    );
+    if (updatedInfo.modifiedCount === 0) return false;
+    return { senderId: senderId, inserted: true };
+  };
  
   module.exports = {
-   getFollowers:getFollowers
+   getFollowers,
+   follow,
   };

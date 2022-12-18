@@ -178,24 +178,14 @@ const updateUserById = async (
   firstName,
   lastName,
   email,
-  phoneNumber,
-  address,
-  city,
-  state,
-  dateOfBirth,
-  age
+  dateOfBirth
 ) => {
   if (
     !userName ||
     !firstName ||
     !lastName ||
     !email ||
-    !phoneNumber ||
-    !address ||
-    !city ||
-    !state ||
-    !dateOfBirth ||
-    !age
+    !dateOfBirth
   )
     throw { message: "All fields must be supplied!", code: 400 };
 
@@ -204,12 +194,7 @@ const updateUserById = async (
   validString(firstName);
   validString(lastName);
   validString(email);
-  validString(phoneNumber);
-  validString(address);
-  validString(city);
-  validString(state);
   validString(dateOfBirth);
-  validAge(age);
 
   const userExists = await getUserById(userId);
   if (!userExists) throw { message: "User doesn't exist!", code: 400 };
@@ -219,12 +204,7 @@ const updateUserById = async (
     firstName: firstName.trim(),
     lastName: lastName.trim(),
     email: email.trim(),
-    phoneNumber: phoneNumber.trim(),
-    address: address.trim(),
-    city: city.trim(),
-    state: state.trim(),
     dateOfBirth: dateOfBirth.trim(),
-    age: age.trim(),
   };
   const updatedInfo = userCollection.updateOne(
     { _id: ObjectId(userId.trim()) },

@@ -7,7 +7,7 @@ const user1 = {
   address: "Hoboken Ave",
   city: "Jersey City",
   state: "NJ",
-  profilePicture: "file path",
+  profilePicture: "/public/uploads/images.jpeg",
   age: 20,
   dateOfBirth: "10/12/2002",
   hashedPassword: "34569Rdhgfh45434",
