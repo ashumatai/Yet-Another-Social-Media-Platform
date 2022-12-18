@@ -59,6 +59,7 @@ const sendEMail = (receiver, req) => {
 };
 
 router.route("/").get(async(req,res) => {
+  console.log("Root route");
   if(!req.session.user || !req.session.user.verified) {
     return res.redirect("/login");
   } else {
@@ -71,7 +72,7 @@ router
   .get(async (req, res) => {
     //code here for GET
     try {
-      if (!req.session.user) {
+      if (!req.session.user?.verified) {
         return res
           .status(200)
           .render("auth/login", {
@@ -118,6 +119,7 @@ router
       const existingUser = await userData.checkUser(emailInput, passwordInput);
       if (existingUser) {
         req.session.user = existingUser;
+        req.session.user.verified = false;
         return res.redirect("otp");
       } else {
         console.log("Line 115", err);
