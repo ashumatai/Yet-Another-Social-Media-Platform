@@ -7,6 +7,9 @@ const likesRoutes = require('./likes');
 const followerRoutes = require("./followers");
 const followingRoutes = require("./followings");
 const comments= require("./comments");
+const conversations= require("./conversation");
+const filtersRoutes = require('./filters');
+const followRequestRoutes = require('./followRequest');
 const multer = require("multer");
 const path = require('path');
 var fs = require('fs');
@@ -26,15 +29,19 @@ const constructorMethod = (app) => {
   app.use('/posts', postsRoutes);
   app.use('/followers', followerRoutes);
   app.use('/followings', followingRoutes);
+  app.use('/filters', filtersRoutes);
+  app.use('/followRequest', followRequestRoutes);
   app.use('/savedPosts', savedPostsRoutes);
   app.use('/home', homeRoutes);
   app.use('/likes', likesRoutes);
   app.use('/comments', comments);
+  app.use('/conversations', conversations);
 
   app.post("/uploadImage", (req, res) => {
     uploadImage(req, res, function (e) {
       if(e)
         return res.status(500).json("Failed to upload image");
+        console.log(file);
       let path = req.file.destination + "/" + req.file.filename;
       console.log(path);
       path = path.substring(1);

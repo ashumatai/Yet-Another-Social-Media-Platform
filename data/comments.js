@@ -1,3 +1,7 @@
+/**
+ * @author Deepali Nagwade <dnagwade@stevens.edu>
+ * */
+
 const mongoCollections = require('../config/mongoCollections');
 const posts = mongoCollections.posts;
 const users = mongoCollections.users;

@@ -33,7 +33,33 @@ const {ObjectId} = require('mongodb');
     return { senderId: senderId, inserted: true };
   };
  
+  const getFollowersAndFollowing = async (userId) => {
+    // if(validatiion.validObjectId(userId,"ID"));
+    userId = userId.trim();
+    const userscollection = await users();
+    let AllData = [];
+    const user_data = await userscollection.findOne({_id: ObjectId(userId)});
+    if(user_data === null) throw {error:'No user found with '+userId};
+    const followerstData = user_data.followers;
+    const followingData = user_data.followings;
+    if(followerstData.length !=0){
+      for (const y of followerstData) {
+        AllData.push(await userscollection.findOne({_id: ObjectId(y)}));
+    }
+    }
+    if(followingData.length !=0){
+      for (const x of followingData) {
+        AllData.push(await userscollection.findOne({_id: ObjectId(x)}));
+    }
+    }
+    
+    
+    
+    if(AllData.length === 0) throw {error:'No Followers found for  '+userId};
+    return AllData; 
+  };
   module.exports = {
+   getFollowersAndFollowing:getFollowersAndFollowing
    getFollowers,
    follow,
   };

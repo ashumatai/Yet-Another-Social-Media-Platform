@@ -1,10 +1,9 @@
- 
-  {{!-- @author Kajol Rajesh Shah <kajol.shsh@gmail.com> --}}
+{{!-- @author Kajol Rajesh Shah <kajol.shsh@gmail.com> --}}
  
     <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
         <a class="navbar-brand" href="#">YASMP</a>
-        <form class="form-inline">
-            <input class="form-control mr-sm-2 search" type="search" placeholder="Search.." aria-label="Search">
+        <form  id="searchTag" class="form-inline">
+            <input class="form-control mr-sm-2 search" type="text" placeholder="Search Tag.." aria-label="Search">
         </form>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -12,7 +11,7 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-house fa-md"></i></a>
+                <a class="nav-link ml-4 mr-4 homeBtn"   href="#"><i class="fa-solid fa-house fa-md"></i></a>
                 </li>
                 <!-- <li class="nav-item">
                 <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-heart fa-md"></i></a>
@@ -21,10 +20,16 @@
                 <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-gear fa-md"></i></a>
                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-user fa-md"></i></a>
+                    <a class="nav-link ml-4 mr-4" href="/users"><i class="fa-solid fa-user fa-md"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-message fa-md"></i></a>
+                    <a class="nav-link ml-4 mr-4 dmBtn" data-toggle="modal" data-target="#dmModal"><i class="fa-solid fa-message fa-md"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-4 mr-4 postBtn"  data-toggle="modal" data-target="#postModal" ><i class="fa-solid fa-plus fa-md"></i></a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link ml-4 mr-4" href="/logout"><i class="fa-solid fa-sign-out fa-md"></i></a>
                 </li>
             </ul>
             </div>        
@@ -33,15 +38,13 @@
 
   <div class="container mytabs mt-4 mb-3">
     <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4">
-            <button id="homeBtn" class="btn btn-secondary mb-2">Home</button>
+        <div class="col-xs-4 col-sm-6 col-md-6 ">
+            <button  class="btn btn-secondary mb-2 homeBtn">Home</button>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4">
+        <div class="col-xs-4 col-sm-6 col-md-6 ">
             <button id="feedBtn" class="btn btn-secondary mb-2">Feed</button>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4">
-            <button class="btn btn-secondary mb-2">Filters</button>
-        </div>
+        
     </div>
 </div>
 
@@ -53,13 +56,12 @@
        
             {{#each postData}}
                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-4">
-            
                     <div class="card" >
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAYhFkNrmRfN1VFDiPc-H-l2FEm5MRs2raw&usqp=CAU" class="card-img-top" alt="...">
+                        <img src="../..{{postContent}}" class="card-img-top" alt="postcontent">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex flex-row align-items-center">
-                                    <div class="userProfile"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAYhFkNrmRfN1VFDiPc-H-l2FEm5MRs2raw&usqp=CAU"  alt="..."></div>
+                                    <div class="userProfile"><img src="../..{{profilePicture}}"  alt="userProfile"></div>
                                     <div class="ms-2 ml-2 ">
                                         <h6 class="mb-0">{{userName}}</h6> <span>{{date}}</span>
                                     </div>
@@ -70,19 +72,46 @@
                             <div class="d-flex justify-content-stretch mt-4 mb-2">
                                     
                                         {{#if hasLiked}}
-                                            <a class="mr-2 likesBtn" name="{{_id}}"><i class="fa-solid fa-heart fa-lg" style="color:red"></i></a>
-                                            {{else}}
-                                            <a class="mr-2 likesBtn" name="{{_id}}"><i class="fa-solid fa-heart fa-lg" style="color:white"></i></a>
+                                            <a class="mr-2 likesBtn" name="{{_id}}"><i class="fa-solid fa-heart fa-lg" style="color:red"></i>
+                                                {{#if noOfLikes}}
+                                                    <p class="mr-2 no_likes">{{noOfLikes}} </p>
+                                                    {{else}}
+                                                    <p class="mr-2 no_likes"> 0 </p>
+                                                {{/if}}
+                                            </a>
+                                        {{else}}
+                                            <a class="mr-2 likesBtn" name="{{_id}}"><i class="fa-solid fa-heart fa-lg" style="color:white"></i>
+                                                 {{#if noOfLikes}}
+                                                    <p class="mr-2 no_likes">{{noOfLikes}} </p>
+                                                    {{else}}
+                                                    <p class="mr-2 no_likes"> 0 </p>
+                                                {{/if}}
+                                            </a>
                                         {{/if}}
                                         
-                                        <a class="ml-4" href="#"><i class="fa-solid fa-comment fa-lg"></i></a>
-                                        <a class="ml-4" href="#"><i class="fas fa-share fa-lg"></i></a>
+                                        <a class="ml-4 commentsBtn" name="{{_id}}" data-toggle="modal" data-target="#commentModal"><i class="fa-solid fa-comment fa-lg"></i>
+                                            <p class="mr-2 no_comments">{{comments.length}}</p>
+                                        </a>
+                                        <a class="ml-4 shareBtn" name="{{_id}}" data-toggle="modal" data-target="#shareModal"><i class="fas fa-share fa-lg"></i></a>
                                         {{#if savedPosts}}
                                             
-                                            <a class="ml-4 savedPostBtn" id="{{_id}}"><i class="fa-solid fa-bookmark fa-lg " style="color:black"></i></a>
+                                            <a class="ml-4 savedPostBtn" id="{{_id}}"><i class="fa-solid fa-bookmark fa-lg " style="color:black"></i>
+                                                
+                                            </a>
                                             {{else}}
-                                            <a class="ml-4 savedPostBtn" id="{{_id}}"><i class="fa-solid fa-bookmark fa-lg " style="color:white"></i></a>
+                                            <a class="ml-4 savedPostBtn" id="{{_id}}"><i class="fa-solid fa-bookmark fa-lg " style="color:white"></i>
+                                               
+                                            </a>
                                         {{/if}}
+                                       
+                                        
+                                        
+                            </div>
+                            <div class="d-flex justify-content-stretch mt-4 mb-2">
+                                    
+                                        
+                                        
+                                        
                                        
                                         
                                         
@@ -97,6 +126,128 @@
         </div>
     </div>
 </div>
+
+{{!-- Comment Modal --}}
+
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="commentModalLabel">Comments</h5>
+        <button type="button" class="close commentClose" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container row allComments">
+          
+        </div>
+
+        <form id="addComment" action="#">
+            <label for="comment">Comment:</label><br>
+            <input type="text" id="comment" name="comment"><br><br>
+            <button type="submit" class="btn btn-primary">Save Comment</button>
+        </form> 
+        <p class="error"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary commentClose" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- share Modal --}}
+
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shareModalLabel">Share Post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container row allUsers">
+          
+        </div>
+
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Direct Message Modal --}}
+
+<div class="modal fade" id="dmModal" tabindex="-1" role="dialog" aria-labelledby="dmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dmModalLabel">Direct Message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container row allFollowers">
+          
+        </div>
+
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- post Modal --}}
+
+<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="postModalLabel">Upload Post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+                <div class="create-post-form">
+        <form id="post-form">
+            <label class="text-input" for="caption">Caption</label>
+            <input type="text" id="caption" name="caption" value="{{post.caption}}" required/><br><br>
+            <label class="image-input" for="imageUpload">Add a post to Upload</label>
+            <input id="imageUpload" name="imageUpload" accept="image/*" class="form-control" type="file"/> <br><br>
+            {{!-- <div id="invalid-image" class="invalid-feedback"> Please select at least one image </div> --}}
+            <label class="text-input" for="tag">Tag</label>
+            <input type="text" id="tag" name="tag" value="{{post.tags}}" required/><br><br>
+            <button type="submit" class="btn btn-primary">Upload Post</button>
+            <br><br>
+            <p class="justify-content-center postError"></p>
+        </form>
+        </div>
+       
+             
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="footer fixed-bottom text-center text-lg-start">
     
     <div class="text-center p-3">
@@ -105,4 +256,3 @@
     </div>
     
   </footer>
- 

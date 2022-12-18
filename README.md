@@ -21,3 +21,6 @@ Yet Another Social Media Platform (YASMP) is a simple user-friendly platform tha
 
 **References:**
 1. ***Random ID Generator:*** [stack overflow](https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript).
+2. 
+1. ***Image Upload Approach:*** [Youtube](https://www.youtube.com/watch?v=7BnTHapJmD0).
+
