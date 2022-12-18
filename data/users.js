@@ -82,6 +82,7 @@ const getUserByEmail = async (email) => {
     const userCollection = await users();
     const user = await userCollection.findOne({ email: email });
     if (!user || user === null) return false;
+    user._id = user._id.toString();
     return user;
   } catch (err) {
     throw err;
