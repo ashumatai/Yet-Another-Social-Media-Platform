@@ -1,21 +1,23 @@
-const comments = require("./comments");
-const conversations = require("./conversations");
-const followers = require("./followers");
-const followings = require("./followings");
-const home = require("./home");
-const likes = require("./likes");
-const posts = require("./posts");
-const savedPost = require("./savedPosts");
-const users = require("./users");
-
+conversations = require("./conversations");
+posts = require("./posts");
+users = require("./users");
+savedPost = require("./savedPosts");
+home = require("./home");
+likes = require("./likes");
+filters = require("./filters");
+comments = require("./comments");
+followRequest = require("./followRequest");
+followers = require("./followers");
+followings = require("./followings");
 module.exports = {
-    comments,
-    conversations,
-    followers,
-    followings,
-    home,
-    likes,
-    posts,
-    savedPost,
-    users: users,
+    posts:posts,
+    users:users,
+    savedPost:savedPost,
+    conversations:conversations,
+    home:home,
+    likes:likes,
+    filters:filters,
+    comments:comments,
+    followRequest:followRequest,
+    followers:followers
 };

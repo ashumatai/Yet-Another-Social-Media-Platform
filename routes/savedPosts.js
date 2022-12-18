@@ -3,21 +3,46 @@ const router = express.Router();
 const savedPostData = require('../data/savedPosts');
 const validatiion = require('../helpers/validations');
 router
-  .route('/:userId')
+  .route('/')
   .get(async (req, res) => {
     try {
     
-      if(validatiion.validObjectId(req.params.userId,"ID"));
-      req.params.userId = req.params.userId.trim();
-      const savedPost = await savedPostData.getsavedPost(req.params.userId);
-      res.json(savedPost);
+      let userId = req.session.user._id.toString();
+      userId = userId.trim();
+      if(validatiion.validString(userId,"ID"));
+      if(validatiion.validObjectId(userId,"ID"));
+      const savedPost = await savedPostData.getsavedPost(userId);
+      return res
+          .status(200)
+          .render('home/homePage',{
+          partial: "home-script",
+          css: "home-css",
+          title:"Home",
+          postData:savedPost,
+        });
+      
     } 
     catch (e) {
       if(typeof(e)==='object'){
-          res.status(404).send(e);       
+          // console.log(e);
+          return res
+          .status(404)
+          .render('home/error',{
+          partial: "home-script",
+          css: "home-css",
+          title:"Error",
+          error:e});
+          // res.status(404).send(e);       
       }
       else{
-        res.status(400).send(e);
+        return res
+          .status(400)
+          .render('home/error',{
+          partial: "home-script",
+          css: "home-css",
+          title:"Error",
+          error:e});
+        // res.status(400).send(e);
       }
     } 
   });
@@ -25,21 +50,28 @@ router
   .route('/')
   .post(async (req, res) => {
     try {
-    
+
+      let userId = req.session.user._id.toString();
+      userId = userId.trim();
+      if(validatiion.validString(userId,"ID"));
+      if(validatiion.validObjectId(userId,"ID"));
       if(validatiion.validObjectId(req.body.postId,"ID"));
-      if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
       req.body.postId = req.body.postId.trim();
-      // trim user id
-      const savedPost = await savedPostData.addsavedPost("63963928ac02e3a9db204155",req.body.postId);
+      const savedPost = await savedPostData.addsavedPost(userId,req.body.postId);
       // const savedPost = req.body.postId;
       res.json(savedPost);
+   
     } 
     catch (e) {
       if(typeof(e)==='object'){
+        // console.log(e);
           res.status(404).send(e);       
       }
+      else if(typeof(e)==='number'){
+        res.status(500).send("Cannot save the post");
+      }
       else{
-        console.log(e);
+        
         res.status(400).send(e);
       }
     } 
@@ -48,12 +80,14 @@ router
   .route('/')
   .delete(async (req, res) => {
     try {
-    
+      let userId = req.session.user._id.toString();
+      userId = userId.trim();
+      if(validatiion.validString(userId,"ID"));
+      if(validatiion.validObjectId(userId,"ID"));
       if(validatiion.validObjectId(req.body.postId,"ID"));
-      if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
       req.body.postId = req.body.postId.trim();
       // trim user id
-      const savedPost = await savedPostData.deletesavedPost("63963928ac02e3a9db204155",req.body.postId);
+      const savedPost = await savedPostData.deletesavedPost(userId,req.body.postId);
       // const savedPost = req.body.postId;
       res.json(savedPost);
     } 
@@ -61,8 +95,10 @@ router
       if(typeof(e)==='object'){
           res.status(404).send(e);       
       }
+      else if(typeof(e)==='number'){
+        res.status(500).send("Cannot unsave the post");
+      }
       else{
-        console.log(e);
         res.status(400).send(e);
       }
     } 

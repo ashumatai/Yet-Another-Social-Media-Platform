@@ -1,53 +1,11 @@
       {{!-- @author Kajol Rajesh Shah <kajol.shsh@gmail.com> --}}
-    <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">YASMP</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                <a class="nav-link ml-4 mr-4 homeBtn"  ><i class="fa-solid fa-house fa-md"></i></a>
-                </li>
-                <!-- <li class="nav-item">
-                <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-heart fa-md"></i></a>
-                </li> -->
-                <li class="nav-item">
-                <a class="nav-link ml-4 mr-4" id="userSavedPosts"><i class="fa-solid fa-bookmark fa-md"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-user fa-md"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-message fa-md"></i></a>
-                </li>
-            </ul>
-            </div>        
-    </nav>
-<!-- tabs -->
 
-  <div class="container mytabs mt-4 mb-3">
-    <div class="row">
-        <div class="col-xs-4 col-sm-6 col-md-3 ">
-            <button id="feedBtn" class="btn btn-secondary mb-2">Feed</button>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-3">
-            <button id="mostLikesBtn" class="btn btn-secondary mb-2">Most likes</button>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-3">
-            <button id="oldestBtn" class="btn btn-secondary mb-2">Oldest</button>
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-3">
-            <button id="newestBtn" class="btn btn-secondary mb-2">Newest</button>
-        </div>
-    </div>
-</div>
 
 <!-- Posts -->
 
-<div class="container myposts mt-2">
-    <div class="row" id="allCards">
-            {{#each postData}}
+
+    <div class="row">
+        {{#each postData}}
                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-4">
             
                     <div class="card" >
@@ -98,50 +56,10 @@
                     </div>
 
                 </div>
-              
-            {{/each}}
+            
+            {{/each}} 
        
-         
-        </div>
-    </div>
-</div>
-
-{{!-- Comment Modal --}}
-
-<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="commentModalLabel">Comments</h5>
-        <button type="button" class="close commentClose" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="container row allComments">
-          
-        </div>
-
-        <form id="addComment" action="#">
-            <label for="comment">Comment:</label><br>
-            <input type="text" id="comment" name="comment"><br><br>
-            <button type="submit" class="btn btn-primary">Save Comment</button>
-        </form> 
-        <p class="error"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary commentClose" data-dismiss="modal">Close</button>
+            
        
-      </div>
     </div>
-  </div>
-</div>
 
-<footer class="footer fixed-bottom text-center text-lg-start">
-    
-    <div class="text-center p-3">
-      © 2022 Copyright:
-      <a class="text-light" href="#">TEAM YASMP</a>
-    </div>
-    
-  </footer>
