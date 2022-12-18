@@ -7,6 +7,8 @@ const router = express.Router();
 const followersData = require('../data/followers');
 const {ObjectId} = require('mongodb');
 const validatiion = require('../helpers/validations');
+const followingsData = require("../data/followings");
+
   // router
   // .route('/')
   // .get(async (req, res) => {
@@ -52,11 +54,6 @@ const validatiion = require('../helpers/validations');
       }
     } 
   });
-
-const followersData = require("../data/followers");
-const { ObjectId } = require("mongodb");
-const validatiion = require("../helpers/validations");
-const followingsData = require("../data/followings");
 
 router.route("/").get(async (req, res) => {
   try {
