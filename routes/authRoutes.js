@@ -291,7 +291,7 @@ router
         return res.status(200).redirect("/home"); // Homepage
       } else {
         console.log("OTPs:", OTPInput, otp);
-        return res.status(err?.status ?? 500).render("auth/two-factor", {
+        return res.status(400).render("auth/two-factor", {
           title: "2 Factor",
           error: "OTP doesn't match",
           partial: "auth-script",
@@ -302,7 +302,7 @@ router
       console.log("Line 270", err);
       return res.status(err?.status ?? 500).render("auth/two-factor", {
         title: "2 Factor",
-        error: err?.message ?? err,
+        error: err?.message ?? err ?? "Incorrect OTP",
         partial: "auth-script",
         css: "auth-css",
       });
