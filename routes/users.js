@@ -43,14 +43,14 @@ router.route("/").get(async (req, res) => {
       const post = await postsCollection.findOne({_id: ObjectId(postId)});
       allUserPosts.push(post);
     }
-    res.render("userPage", {
+    return res.render("userPage", {
       title: user.userName,
       userPosts: allUserPosts,
       partial: "user-script",
       css: "user-css"
     });
   } catch (error) {
-    res.status(error.code).send(error.message);
+    return res.status(error.code).send(error.message);
   }
 });
 
@@ -58,18 +58,18 @@ router.route("/:userId").delete(async (req, res) => {
   try {
     validObjectId(req.params.userId);
   } catch (error) {
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
   try {
     await getUserById(req.params.userId);
   } catch (error) {
-    res.status(error.code).send(error.message);
+    return res.status(error.code).send(error.message);
   }
   try {
     const userById = await deleteUserById(req.params.userId);
-    res.json(userById);
+    return res.json(userById);
   } catch (error) {
-    res.status(error.code).send(error.message);
+    return res.status(error.code).send(error.message);
   }
 });
 
@@ -77,14 +77,14 @@ router.route("/:userId").put(async (req, res) => {
   try {
     validObjectId(req.params.userId);
   } catch (error) {
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
 
   // checking if the user exists or not in the first place
   try {
     await getUserById(req.params.userId);
   } catch (error) {
-    res.status(error.code).send(error.message);
+    return res.status(error.code).send(error.message);
   }
 
   let user = req.body;
@@ -98,7 +98,7 @@ router.route("/:userId").put(async (req, res) => {
     )
       throw { message: "All fields must be supplied!", code: 400 };
   } catch (error) {
-    res.status(error.code).send(error.message);
+    return res.status(error.code).send(error.message);
   }
 
   try {
@@ -108,7 +108,7 @@ router.route("/:userId").put(async (req, res) => {
     validEmail(user.email, "Email");
     // validString(user.dateOfBirth, "DOB");
   } catch (error) {
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
 
   try {
@@ -119,7 +119,7 @@ router.route("/:userId").put(async (req, res) => {
     req.body.profilePicInput = currentUser.profilePicture;
   }
   catch (error) {
-    res.status(502).send("<h2>You are offline!</h2>");
+    return res.status(502).send("<h2>You are offline!</h2>");
   }
 
   try {
@@ -132,9 +132,9 @@ router.route("/:userId").put(async (req, res) => {
       user.profilePicture
       // xss(user.dateOfBirth),
     );
-    res.json(updatedUser);
+    return res.json(updatedUser);
   } catch (error) {
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
 });
 
