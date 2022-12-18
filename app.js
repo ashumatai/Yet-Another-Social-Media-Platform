@@ -11,13 +11,28 @@ const { users } = require("./config/mongoCollections");
 
 const app = express();
 const static = express.static(__dirname + "/public");
-let database, collection;
+
+const Handlebars = require('handlebars');
+
+const handlebarsInstance = exphbs.create({
+  defaultLayout: 'main',
+  // Specify helpers which are only registered on this instance.
+  helpers: {
+    asJSON: (obj, spacing) => {
+      if (typeof spacing === 'number')
+        return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
+
+      return new Handlebars.SafeString(JSON.stringify(obj));
+    }
+  },
+  partialsDir: ['views/partials/']
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/public", static);
 
-app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
+app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
 app.use(
@@ -32,6 +47,7 @@ app.use(
 
 // MIDDLEWARE GOES BELOW:
 
+// LOGGING MIDDLEWARE
 app.use(async (req, res, next) => {
   const dateString = new Date().toUTCString();
   const reqMethod = req.method;
@@ -39,6 +55,22 @@ app.use(async (req, res, next) => {
   console.log(`[${dateString}]: ${reqMethod} ${reqRoute}`);
   next();
 });
+
+// MIDDLEWARE FOR BASE ROUTE
+
+
+// AUTH MIDDLEWARE FOR ALL PATHS EXCEPT AUTH PATHS
+app.use('*', async(req, res, next) => {
+  const reqPath = req.originalUrl;
+  if (reqPath == '/login' || reqPath == '/signup' || reqPath == '/otp' || reqPath == '/logout') {
+    if(req.session.user && req.session.user.verified) {
+      return res.redirect("/home");
+    }
+  } else if (!req.session.user || !req.session.user.verified) {
+    return res.redirect("/login");
+  }
+  next();
+})
 
 // MIDDLEWARE ENDS HERE
 

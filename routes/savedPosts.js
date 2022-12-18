@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userData = require('../data/users');
 const savedPostData = require('../data/savedPosts');
-const {ObjectId} = require('mongodb');
 const validatiion = require('../helpers/validations');
 router
   .route('/')

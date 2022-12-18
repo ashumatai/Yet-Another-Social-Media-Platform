@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const followingsData = require('../data/followings');
 const {ObjectId} = require('mongodb');
@@ -25,5 +25,16 @@ const validatiion = require('../helpers/validations');
       }
     } 
   });
- 
-  module.exports = router;
+
+router.route("/unfollow").delete(async (req, res) => {
+  try {
+    const toBeDeleted = req.body;
+    const deleted = await followingsData.unfollow("639518baec8160da0010d848", toBeDeleted.id);
+
+    res.send(deleted);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+});
+
+module.exports = router;

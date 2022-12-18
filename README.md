@@ -18,3 +18,9 @@ Yet Another Social Media Platform (YASMP) is a simple user-friendly platform tha
 3. ***Customizable Privacy Settings:*** This feature allows users to determine who can view their profiles and what amount of their information they want to share.
 4. ***Search Engine:*** This feature allows users to browse through diverse content posted by others using tags.
 5. ***Direct Message:*** This feature allows users to chat with each other in the same space where they share content with other users. Optionally also allows users to react to each other’s messages and shared posts.
+
+**References:**
+1. ***Random ID Generator:*** [stack overflow](https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript).
+2. 
+1. ***Image Upload Approach:*** [Youtube](https://www.youtube.com/watch?v=7BnTHapJmD0).
+

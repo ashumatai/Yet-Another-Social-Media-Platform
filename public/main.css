@@ -78,8 +78,3 @@ font-weight: bold;
 .card a {
     cursor: pointer;
 }
-.mytabs .dropdown-menu{
-    width: 100% !important;
-    margin-top: 5% !important;
-    border-radius: 2px;
-}

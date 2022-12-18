@@ -1,0 +1,41 @@
+<main class="form-signin w-200 m-auto">
+  <form id="signup-form" method="POST" action="/signup">
+    <img class="m-4" src="../../public/images/YASMPFullLogo.png" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Let's get you started</h1>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" name="firstnameInput" id="firstnameInput" placeholder="John" required />
+      <label for="firstnameInput">First Name</label>
+    </div>
+    <div class="form-floating">
+      <input type="text" class="form-control" name="lastnameInput" id="lastnameInput" placeholder="Doe" required />
+      <label for="lastnameInput">Last Name</label>
+    </div>
+    <div class="form-floating">
+      <input class="form-control" name="usernameInput" id="usernameInput" type="text" placeholder="jdoe" required />
+      <label for="emailInput">Username</label>
+    </div>
+    <div class="form-floating">
+      <input type="email" class="form-control" name="emailInput" id="emailInput" placeholder="john.doe@example.com" required />
+      <label for="emailInput">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" name="passwordInput" id="passwordInput" placeholder="Password" required />
+      <label for="passwordInput">Password</label>
+    </div>
+    <br>
+      <div class="form-floating">
+      <input type="date" class="form-control" name="DOBInput" id="DOBInput" placeholder="dd/mm/yyyy" required />
+      <label for="DOBInput">Date of Birth</label>
+    </div>
+    <br>
+        {{#if error}}
+      <div class="error-div">
+        {{error}}
+      </div>
+    {{/if}}
+    <button id="signup-btn" class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+          <a href="/login" class="mt-2">Already have an account? Click here to log-in</a>
+
+  </form>
+</main>
