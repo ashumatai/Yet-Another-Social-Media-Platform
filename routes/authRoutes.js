@@ -59,6 +59,7 @@ const sendEMail = (receiver, req) => {
 };
 
 router.route("/").get(async(req,res) => {
+  console.log("Root route");
   if(!req.session.user || !req.session.user.verified) {
     return res.redirect("/login");
   } else {
@@ -71,7 +72,7 @@ router
   .get(async (req, res) => {
     //code here for GET
     try {
-      if (!req.session.user) {
+      if (!req.session.user?.verified) {
         return res
           .status(200)
           .render("auth/login", {
@@ -118,6 +119,7 @@ router
       const existingUser = await userData.checkUser(emailInput, passwordInput);
       if (existingUser) {
         req.session.user = existingUser;
+        req.session.user.verified = false;
         return res.redirect("otp");
       } else {
         console.log("Line 115", err);
@@ -242,7 +244,7 @@ router
   .get(async (req, res) => {
     try {
       if (!req.session.user) {
-        location.replace("/");
+        return res.redirect("/login");
       } else {
         otp = sendEMail(req?.session?.user?.email, req);
 
@@ -279,7 +281,10 @@ router
     try {
       let { OTPInput } = req.body;
       OTPInput = xss(OTPInput);
-      otp = req.session.user.otp;
+      otp = req?.session?.user?.otp ?? null;
+      if (!otp) {
+        return res.redirect("/home");
+      }
       if (otp === OTPInput) {
         req.session.user = {
           ...req.session.user,
@@ -288,12 +293,18 @@ router
         return res.status(200).redirect("/home"); // Homepage
       } else {
         console.log("OTPs:", OTPInput, otp);
+        return res.status(400).render("auth/two-factor", {
+          title: "2 Factor",
+          error: "OTP doesn't match",
+          partial: "auth-script",
+          css: "auth-css",
+        });
       }
     } catch (err) {
       console.log("Line 270", err);
       return res.status(err?.status ?? 500).render("auth/two-factor", {
         title: "2 Factor",
-        error: err?.message ?? err,
+        error: err?.message ?? err ?? "Incorrect OTP",
         partial: "auth-script",
         css: "auth-css",
       });

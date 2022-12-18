@@ -148,7 +148,7 @@ const createUser = async (firstnameInput, lastnameInput, DOBInput, usernameInput
     const hash = await bcrypt.hash(passwordInput, saltRounds);
     const userCollection = await users();
     let newUser = {
-      username: usernameInput,
+      userName: usernameInput,
       hashedPassword: hash,
       lastName: lastnameInput,
       firstName: firstnameInput,
@@ -222,6 +222,28 @@ const updateUserById = async (
   }
 };
 
+const searchUsers = async (searchText) => {
+  try {
+    if (!searchText || typeof searchText != 'string' || searchText.trim().length === 0) throw `Empty search text`;
+  } catch (err) {
+    throw badRequestError(err);
+  }
+
+  try {
+    const splitSearch = searchText.split(" ");
+    const userCollection = await users();
+    const matchedUsers = await userCollection.find({$or: [
+      {userName: {$in: splitSearch}},
+      {firstName: {$in: splitSearch}},
+      {lastName: {$in: splitSearch}}
+    ]}).toArray();
+    if (!matchedUsers) throw {message: "No users found", status: 404};
+    return matchedUsers;
+  } catch (err) {
+    throw (err);
+  }
+};
+
 
 module.exports = {
   checkUser,
@@ -232,4 +254,5 @@ module.exports = {
   createUser,
   deleteUserById,
   updateUserById,
+  searchUsers,
 };

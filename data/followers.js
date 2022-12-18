@@ -59,7 +59,7 @@ const {ObjectId} = require('mongodb');
     return AllData; 
   };
   module.exports = {
-   getFollowersAndFollowing:getFollowersAndFollowing
+   getFollowersAndFollowing:getFollowersAndFollowing,
    getFollowers,
    follow,
   };
