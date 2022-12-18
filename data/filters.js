@@ -49,7 +49,7 @@ const {ObjectId} = require('mongodb');
     }
     
     if(postData.length===0) throw {error:'No posts found '};
-    return postData.sort( (a,b) => b.noOfLikes - a.noOfLikes );; 
+    return postData.sort( (a,b) => b.noOfLikes - a.noOfLikes );
   };
   const getOldest = async (userId) => {
     if(validatiion.validObjectId(userId,"ID"));
@@ -155,9 +155,48 @@ const {ObjectId} = require('mongodb');
     });
     return  sortedData
   };
+  const getTag = async (tag,userId) => {
+    if(validatiion.validString(tag,"Tag"));
+    if(validatiion.validObjectId(userId,"ID"));
+    userId = userId.trim();
+    tag = tag.trim();
+    tag =tag.toLowerCase();
+    const userscollection = await users();
+    const postscollection = await posts();
+    let postData = [];
+    const user_data = await userscollection.findOne({_id: ObjectId(userId)});
+    if(user_data === null) throw {error:'No user found with '+userId};
+    const sessionUser_savedPosts = user_data.savedPosts;
+    const allpost = await postscollection.find({"tags": tag }).toArray();
+    if(allpost === null) throw {error:'No posts found '};
+    for (const data of allpost) {
+      const postsUser = await userscollection.findOne({"userPosts": data._id.toString() });
+      if(postsUser === null) throw {error:'No user found with this post'};
+      data.userName = postsUser.userName;
+      data.profilePicture = postsUser.profilePicture;
+      if(sessionUser_savedPosts.includes(data)){
+        data.savedPosts = true;
+      }
+      else{
+        //do nothing
+      }
+      if(data.likes.includes(userId)){
+          data.hasLiked = true;
+      } 
+      else{
+        //do nothing
+      }
+      data.noOfLikes = data.likes.length;
+      postData.push(data);
+    }
+    
+    if(postData.length===0) throw {error:'No posts found '};
+    return postData
+  };
   module.exports = {
     
     getMostLikes:getMostLikes,
     getOldest:getOldest,
-    getNewest:getNewest
+    getNewest:getNewest,
+    getTag:getTag
   };
