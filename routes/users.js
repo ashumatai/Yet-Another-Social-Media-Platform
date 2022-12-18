@@ -26,14 +26,20 @@ const { ObjectId } = require("mongodb");
 
 router.route("/").get(async (req, res) => {
   try {
-    // validObjectId(req.session.userId);
     validObjectId(req.session.user._id);
   } catch (error) {
-    res.status(400).send(error);
+    // res.status(400).send(error);
+    const user = req.session.user;
+    return res.render("userPage", {
+      title: user.userName,
+      userPosts: allUserPosts,
+      partial: "user-script",
+      css: "user-css"
+    });
   }
   try {
-    // const user = await getUserById(req.session.userId);
-    const user = await getUserById(req.session.user._id);
+    // const user = await getUserById(req.session.user._id);
+    const user = req.session.user;
     const postsCollection = await posts();
     const allUserPosts = [];
 
@@ -50,92 +56,99 @@ router.route("/").get(async (req, res) => {
       css: "user-css"
     });
   } catch (error) {
-    return res.status(error.code).send(error.message);
+    const user = req.session.user;
+    return res.render("userPage", {
+      title: user.userName,
+      userPosts: allUserPosts,
+      partial: "user-script",
+      css: "user-css",
+      error: error?.message ?? error
+    });
   }
 });
 
-router.route("/:userId").delete(async (req, res) => {
-  try {
-    validObjectId(req.params.userId);
-  } catch (error) {
-    return res.status(400).send(error);
-  }
-  try {
-    await getUserById(req.params.userId);
-  } catch (error) {
-    return res.status(error.code).send(error.message);
-  }
-  try {
-    const userById = await deleteUserById(req.params.userId);
-    return res.json(userById);
-  } catch (error) {
-    return res.status(error.code).send(error.message);
-  }
-});
+// router.route("/:userId").delete(async (req, res) => {
+//   try {
+//     validObjectId(req.params.userId);
+//   } catch (error) {
+//     return res.status(400).send(error);
+//   }
+//   try {
+//     await getUserById(req.params.userId);
+//   } catch (error) {
+//     return res.status(error.code).send(error.message);
+//   }
+//   try {
+//     const userById = await deleteUserById(req.params.userId);
+//     return res.json(userById);
+//   } catch (error) {
+//     return res.status(error.code).send(error.message);
+//   }
+// });
 
-router.route("/:userId").put(async (req, res) => {
-  try {
-    validObjectId(req.params.userId);
-  } catch (error) {
-    return res.status(400).send(error);
-  }
+// router.route("/:userId").put(async (req, res) => {
+//   try {
+//     validObjectId(req.params.userId);
+//   } catch (error) {
+//     return res.status(400).send(error);
+//   }
 
-  // checking if the user exists or not in the first place
-  try {
-    await getUserById(req.params.userId);
-  } catch (error) {
-    return res.status(error.code).send(error.message);
-  }
+//   // checking if the user exists or not in the first place
+//   try {
+//     await getUserById(req.params.userId);
+//   } catch (error) {
+//     return res.status(error.code).send(error.message);
+//   }
 
-  let user = req.body;
-  try {
-    if (
-      !user.userName ||
-      // !user.firstName ||
-      // !user.lastName ||
-      !user.email
-      // !user.dateOfBirth
-    )
-      throw { message: "All fields must be supplied!", code: 400 };
-  } catch (error) {
-    return res.status(error.code).send(error.message);
-  }
+//   let user = req.body;
+//   try {
+//     if (
+//       !user.userName ||
+//       // !user.firstName ||
+//       // !user.lastName ||
+//       !user.email
+//       // !user.dateOfBirth
+//     )
+//       throw { message: "All fields must be supplied!", code: 400 };
+//   } catch (error) {
+//     return res.status(error.code).send(error.message);
+//   }
 
-  try {
-    validString(user.userName, "Username");
-    // validString(user.firstName, "First Name");
-    // validString(user.lastName, "Last Name");
-    validEmail(user.email, "Email");
-    // validString(user.dateOfBirth, "DOB");
-  } catch (error) {
-    return res.status(400).send(error);
-  }
+//   try {
+//     validString(user.userName, "Username");
+//     // validString(user.firstName, "First Name");
+//     // validString(user.lastName, "Last Name");
+//     validEmail(user.email, "Email");
+//     // validString(user.dateOfBirth, "DOB");
+//   } catch (error) {
+//     return res.status(400).send(error);
+//   }
 
-  try {
-    const userCollection = await users();
-    const currentUser = userCollection.findOne({_id: req.params.userId});
-    req.body.usernameInput = currentUser.userName;
-    req.body.emailInput = currentUser.email;
-    req.body.profilePicInput = currentUser.profilePicture;
-  }
-  catch (error) {
-    return res.status(502).send("<h2>You are offline!</h2>");
-  }
+//   try {
+//     const userCollection = await users();
+//     const currentUser = userCollection.findOne({_id: req.params.userId});
+//     req.body.usernameInput = currentUser.userName;
+//     req.body.emailInput = currentUser.email;
+//     req.body.profilePicInput = currentUser.profilePicture;
+//   }
+//   catch (error) {
+//     return res.status(502).send("<h2>You are offline!</h2>");
+//   }
 
-  try {
-    const updatedUser = await updateUserById(
-      req.params.id,
-      xss(user.userName),
-      // xss(user.firstName),
-      // xss(user.lastName),
-      xss(user.email),
-      user.profilePicture
-      // xss(user.dateOfBirth),
-    );
-    return res.json(updatedUser);
-  } catch (error) {
-    return res.status(400).send(error);
-  }
-});
+//   try {
+//     const updatedUser = await updateUserById(
+//       req.params.id,
+//       xss(user.userName),
+//       // xss(user.firstName),
+//       // xss(user.lastName),
+//       xss(user.email),
+//       user.profilePicture
+//       // xss(user.dateOfBirth),
+//     );
+//     return res.json(updatedUser);
+//   } catch (error) {
+//     return res.status(400).send(error);
+//   }
+// });
 
 module.exports = router;
