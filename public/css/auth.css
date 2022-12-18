@@ -93,3 +93,7 @@ body {
   align-items: center;
   margin: 15px 0;
 }
+
+#error-div {
+  color: red;
+}
