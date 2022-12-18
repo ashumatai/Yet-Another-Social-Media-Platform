@@ -24,16 +24,16 @@ const { ObjectId } = require("mongodb");
 //   }
 // });
 
-router.route("/:userId").get(async (req, res) => {
+router.route("/").get(async (req, res) => {
   try {
     // validObjectId(req.session.userId);
-    validObjectId("639518baec8160da0010d848");
+    validObjectId(req.session.user._id);
   } catch (error) {
     res.status(400).send(error);
   }
   try {
     // const user = await getUserById(req.session.userId);
-    const user = await getUserById("639518baec8160da0010d848");
+    const user = await getUserById(req.session.user._id);
     const postsCollection = await posts();
     const allUserPosts = [];
 
