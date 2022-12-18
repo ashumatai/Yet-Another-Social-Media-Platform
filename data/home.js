@@ -11,6 +11,7 @@ const e = require('express');
 
 
 const getAllPost = async (userId) => {
+    if(validatiion.validString(userId,"ID"));
     if(validatiion.validObjectId(userId,"ID"));
     userId = userId.trim();
     const postscollection = await posts();
@@ -55,7 +56,6 @@ const getAllPost = async (userId) => {
        
       }
   }
-    // const post_data = await postscollection.find({}).toArray();
     if(postData.length===0) throw {error:'No posts found '};
     return postData; 
   };
@@ -83,6 +83,7 @@ const getAllPost = async (userId) => {
     
   // };
   const getFollowingPost = async (userId) => {
+    if(validatiion.validString(userId,"ID"));
     if(validatiion.validObjectId(userId,"ID"));
     userId = userId.trim();
     const userscollection = await users();
