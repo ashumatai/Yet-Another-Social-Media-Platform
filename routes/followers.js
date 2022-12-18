@@ -26,16 +26,17 @@ router.route("/").get(async (req, res) => {
 });
 
 router.route("/follow").post(async (req, res) => {
+  const ids = req.body;
+  
   try {
     validatiion.validObjectId("639518baec8160da0010d848", "ID");
     validatiion.validObjectId("63963928ac02e3a9db204155", "ID");
 
-    const ids = req.body;
-
-    const follow = await followersData.follow(ids.senderId, ids.receiverId);
+    const follow = await followersData.follow("639518baec8160da0010d848", ids.id);
     res.send(follow);
   } catch (e) {
-    res.status(500).send(e);
+    console.log(e)
+    res.status(404).send(e);
   }
 });
 

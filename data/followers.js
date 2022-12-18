@@ -27,8 +27,9 @@ const {ObjectId} = require('mongodb');
     const userCollection = await users();
     const updatedInfo = await userCollection.updateOne(
       { _id: ObjectId(receiverId) },
-      { $push: { followRequests: ObjectId(senderId) } }
+      { $push: { followRequests: senderId } }
     );
+    if (updatedInfo.modifiedCount === 0) return false;
     return { senderId: senderId, inserted: true };
   };
  

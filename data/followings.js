@@ -38,6 +38,8 @@ const unfollow = async (senderId, receiverId) => {
     { _id: ObjectId(receiverId) },
     { $pull: { followers: senderId } }
   );
+  
+  if (sender.modifiedCount === 0 || receiver.modifiedCount === 0) return false;
 
   return { sender: senderId, receiver: receiverId, deleted: true };
 };
