@@ -1,14 +1,21 @@
+const comments = require("./comments");
 const conversations = require("./conversations");
-const posts = require("./posts");
-const users = require("./users");
-const savedPost = require("./savedPosts");
+const followers = require("./followers");
+const followings = require("./followings");
 const home = require("./home");
-const likes = require("./likes")
+const likes = require("./likes");
+const posts = require("./posts");
+const savedPost = require("./savedPosts");
+const users = require("./users");
+
 module.exports = {
-    posts,
-    users,
-    savedPost,
+    comments,
     conversations,
+    followers,
+    followings,
     home,
-    likes
+    likes,
+    posts,
+    savedPost,
+    users: users,
 };
