@@ -56,7 +56,12 @@ $(document).ready(function(){
         $('[name='+id+']').parent().remove();
       }
       else{
-        //no accepted
+        swal({
+          title: "Oops!",
+          text: "Cannot accept!",
+          icon: "error",
+          button: "okay",
+        });
       }
       
      
@@ -80,7 +85,12 @@ $(document).ready(function(){
         $('[name='+id+']').parent().remove();
       }
       else{
-        //no accepted
+        swal({
+          title: "Oops!",
+          text: "cannot decline!",
+          icon: "error",
+          button: "okay",
+        });
       }
       
      
