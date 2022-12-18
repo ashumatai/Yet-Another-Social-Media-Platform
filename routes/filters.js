@@ -3,71 +3,174 @@ const router = express.Router();
 const filtersData = require('../data/filters');
 const {ObjectId} = require('mongodb');
 const validatiion = require('../helpers/validations');
+const xss = require('xss');
 router
-  .route('/1')
+  .route('/mostlikes')
   .get(async (req, res) => {
     try {
-        //user from req session remove from home.js
-          if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
-        //   req.params.userId = req.params.userId.trim();
-          const MostLikes = await filtersData.getMostLikes("63963928ac02e3a9db204155");
-        //   console.log(MostLikes);
-        //   res.json(MostLikes);
-          return res.render('home/feedPage',{title:"Feed",postData:MostLikes});
+      
+          let userId = req.session.user._id.toString();
+          userId = userId.trim();
+          if(validatiion.validString(userId,"ID"));
+          if(validatiion.validObjectId(userId,"ID"));
+          const MostLikes = await filtersData.getMostLikes(userId);
+          return res
+          .status(200)
+          .render('home/feedPage',{
+          partial: "home-script",
+          css: "home-css",
+          title:"Feed",
+          postData:MostLikes,
+        });
+         
         } 
         catch (e) {
           if(typeof(e)==='object'){
-            console.log(e);
-              res.status(404).send(e);       
+            return res
+              .status(404)
+              .render('home/error',{
+              partial: "home-script",
+              css: "home-css",
+              title:"Error",
+              error:e});
+              // res.status(404).send(e);       
           }
           else{
-            console.log(e);
-            res.status(400).send(e);
+            return res
+              .status(400)
+              .render('home/error',{
+              partial: "home-script",
+              css: "home-css",
+              title:"Error",
+              error:e});
+            // res.status(400).send(e);
+          }
+        
+      }
+  });
+  router
+  .route('/oldest')
+  .get(async (req, res) => {
+    try {
+          let userId = req.session.user._id.toString();
+          userId = userId.trim();
+          if(validatiion.validString(userId,"ID"));
+          if(validatiion.validObjectId(userId,"ID"));
+          const oldest = await filtersData.getOldest(userId);
+          return res
+          .status(200)
+          .render('home/feedPage',{
+          partial: "home-script",
+          css: "home-css",
+          title:"Feed",
+          postData:oldest,
+        });
+        
+        } 
+        catch (e) {
+          if(typeof(e)==='object'){
+            return res
+              .status(404)
+              .render('home/error',{
+              partial: "home-script",
+              css: "home-css",
+              title:"Error",
+              error:e});
+              // res.status(404).send(e);       
+          }
+          else{
+            return res
+              .status(400)
+              .render('home/error',{
+              partial: "home-script",
+              css: "home-css",
+              title:"Error",
+              error:e});
+            // res.status(400).send(e);
           }
         } 
   });
   router
-  .route('/2')
+  .route('/newest')
   .get(async (req, res) => {
     try {
-        //user from req session remove from home.js
-          if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
-        //   req.params.userId = req.params.userId.trim();
-          const oldest = await filtersData.getOldest("63963928ac02e3a9db204155");
-        //   console.log(MostLikes);
-        //   res.json(MostLikes);
-          return res.render('home/feedPage',{title:"Feed",postData:oldest});
+          let userId = req.session.user._id.toString();
+          userId = userId.trim();
+          if(validatiion.validString(userId,"ID"));
+          if(validatiion.validObjectId(userId,"ID"));
+          const newest = await filtersData.getNewest(userId);
+          return res
+          .status(200)
+          .render('home/feedPage',{
+          partial: "home-script",
+          css: "home-css",
+          title:"Feed",
+          postData:newest,
+        });
+          
         } 
         catch (e) {
           if(typeof(e)==='object'){
-            console.log(e);
-              res.status(404).send(e);       
+            return res
+              .status(404)
+              .render('home/error',{
+              partial: "home-script",
+              css: "home-css",
+              title:"Error",
+              error:e});
+              // res.status(404).send(e);       
           }
           else{
-            console.log(e);
-            res.status(400).send(e);
+            return res
+              .status(400)
+              .render('home/error',{
+              partial: "home-script",
+              css: "home-css",
+              title:"Error",
+              error:e});
+            // res.status(400).send(e);
           }
         } 
   });
   router
-  .route('/3')
-  .get(async (req, res) => {
+  .route('/tags')
+  .post(async (req, res) => {
     try {
-        //user from req session remove from home.js
-          if(validatiion.validObjectId("63963928ac02e3a9db204155","ID"));
-        //   req.params.userId = req.params.userId.trim();
-          const newest = await filtersData.getNewest("63963928ac02e3a9db204155");
-        //   console.log(MostLikes);
-        //   res.json(MostLikes);
-          return res.render('home/feedPage',{title:"Feed",postData:newest});
+      
+          let userId = req.session.user._id.toString();
+          userId = userId.trim();
+          if(validatiion.validString(userId,"ID"));
+          if(validatiion.validObjectId(userId,"ID")); 
+          if(validatiion.validString(xss(req.body.tag).trim(),"Tag"));
+          const tag = await filtersData.getTag( xss(req.body.tag).trim(),userId);
+          return res
+          .status(200)
+          .render('home/tagPage',{
+          partial: "home-script",
+          css: "home-css",
+          title:"Tag",
+          postData:tag,
+        });
         } 
         catch (e) {
           if(typeof(e)==='object'){
-            console.log(e);
+            // return res
+            //   .status(404)
+            //   .render('home/error',{
+            //   partial: "home-script",
+            //   css: "home-css",
+            //   title:"Error",
+            //   error:e});
               res.status(404).send(e);       
           }
           else{
-            console.log(e);
+            // return res
+            //   .status(400)
+            //   .render('home/error',{
+            //   partial: "home-script",
+            //   css: "home-css",
+            //   title:"Error",
+            //   error:e});
             res.status(400).send(e);
           }
         } 
