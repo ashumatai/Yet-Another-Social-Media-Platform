@@ -187,7 +187,7 @@ const validAge = function error_handling_for_age(age) {
 const validDate = (dateString) => {
   if (!dateString || typeof dateString != "string" || dateString.trim().length === 0)
   throw `Missing Date`;
-  if (!moment(dateString, 'M/D/YYYY',true).isValid()) throw `Invalid Date`;
+  if (!moment(dateString, 'YYYY-MM-DD',true).isValid()) throw `Invalid Date`;
 };
 
 const validDOB = (dateString) => {

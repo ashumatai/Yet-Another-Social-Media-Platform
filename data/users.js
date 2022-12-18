@@ -57,7 +57,7 @@ const getUserByUsername = async (username) => {
   
   // Mongo Collection operations
   try {
-    const userCollection = await user_collection();
+    const userCollection = await users();
     const user = await userCollection.findOne({ username: username });
     if (!user || user === null) return false;
     return user;
@@ -118,6 +118,7 @@ const checkUser = async (email, password) => {
 const createUser = async (firstnameInput, lastnameInput, DOBInput, usernameInput, emailInput, passwordInput) => {
   // Validations
   try {
+    if (!firstnameInput || !lastnameInput || !DOBInput || !usernameInput || !emailInput || !passwordInput) throw `All fields must be supplied!`;
     validName(firstnameInput);
     validName(lastnameInput);
     validDate(DOBInput);
@@ -126,7 +127,7 @@ const createUser = async (firstnameInput, lastnameInput, DOBInput, usernameInput
     validUsername(usernameInput);
     validPassword(passwordInput);
 
-    const takenUser = await getUserByUsername(username);
+    const takenUser = await getUserByUsername(usernameInput);
     if (takenUser) throw `Username already taken!`;
     const takenEmail = await getUserByEmail(emailInput);
     if (takenEmail) throw `Email already registered to another account!`;
