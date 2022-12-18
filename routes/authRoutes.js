@@ -295,7 +295,7 @@ router
 router.route("/logout").get(async (req, res) => {
   //code here for GET
   req.session.destroy();
-  return res.render("logout", {
+  return res.render("auth/logout", {
     title: "Logged out",
     partial: "auth-script",
     css: "auth-css",
