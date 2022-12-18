@@ -57,7 +57,7 @@ const getUserByUsername = async (username) => {
   
   // Mongo Collection operations
   try {
-    const userCollection = await user_collection();
+    const userCollection = await users();
     const user = await userCollection.findOne({ username: username });
     if (!user || user === null) return false;
     return user;
@@ -82,6 +82,7 @@ const getUserByEmail = async (email) => {
     const userCollection = await users();
     const user = await userCollection.findOne({ email: email });
     if (!user || user === null) return false;
+    user._id = user._id.toString();
     return user;
   } catch (err) {
     throw err;
@@ -118,6 +119,7 @@ const checkUser = async (email, password) => {
 const createUser = async (firstnameInput, lastnameInput, DOBInput, usernameInput, emailInput, passwordInput) => {
   // Validations
   try {
+    if (!firstnameInput || !lastnameInput || !DOBInput || !usernameInput || !emailInput || !passwordInput) throw `All fields must be supplied!`;
     validName(firstnameInput);
     validName(lastnameInput);
     validDate(DOBInput);
@@ -126,7 +128,7 @@ const createUser = async (firstnameInput, lastnameInput, DOBInput, usernameInput
     validUsername(usernameInput);
     validPassword(passwordInput);
 
-    const takenUser = await getUserByUsername(username);
+    const takenUser = await getUserByUsername(usernameInput);
     if (takenUser) throw `Username already taken!`;
     const takenEmail = await getUserByEmail(emailInput);
     if (takenEmail) throw `Email already registered to another account!`;
@@ -177,24 +179,14 @@ const updateUserById = async (
   firstName,
   lastName,
   email,
-  phoneNumber,
-  address,
-  city,
-  state,
-  dateOfBirth,
-  age
+  dateOfBirth
 ) => {
   if (
     !userName ||
     !firstName ||
     !lastName ||
     !email ||
-    !phoneNumber ||
-    !address ||
-    !city ||
-    !state ||
-    !dateOfBirth ||
-    !age
+    !dateOfBirth
   )
     throw { message: "All fields must be supplied!", code: 400 };
 
@@ -203,12 +195,7 @@ const updateUserById = async (
   validString(firstName);
   validString(lastName);
   validString(email);
-  validString(phoneNumber);
-  validString(address);
-  validString(city);
-  validString(state);
   validString(dateOfBirth);
-  validAge(age);
 
   const userExists = await getUserById(userId);
   if (!userExists) throw { message: "User doesn't exist!", code: 400 };
@@ -218,12 +205,7 @@ const updateUserById = async (
     firstName: firstName.trim(),
     lastName: lastName.trim(),
     email: email.trim(),
-    phoneNumber: phoneNumber.trim(),
-    address: address.trim(),
-    city: city.trim(),
-    state: state.trim(),
     dateOfBirth: dateOfBirth.trim(),
-    age: age.trim(),
   };
   const updatedInfo = userCollection.updateOne(
     { _id: ObjectId(userId.trim()) },

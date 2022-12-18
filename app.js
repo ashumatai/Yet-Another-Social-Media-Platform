@@ -56,23 +56,21 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// MIDDLEWARE FOR HOME PAGE, ADD SIMILAR MIDDLEWARES FOR ALL PAGES THAT REQUIRE AUTHENTICATION
-app.use('/home', async(req, res, next) => {
-  if(!req.session.user || !req.session.user.verified) {
+// MIDDLEWARE FOR BASE ROUTE
+
+
+// AUTH MIDDLEWARE FOR ALL PATHS EXCEPT AUTH PATHS
+app.use('*', async(req, res, next) => {
+  const reqPath = req.originalUrl;
+  if (reqPath == '/login' || reqPath == '/signup' || reqPath == '/otp' || reqPath == '/logout') {
+    if(req.session.user && req.session.user.verified) {
+      return res.redirect("/home");
+    }
+  } else if (!req.session.user || !req.session.user.verified) {
     return res.redirect("/login");
   }
   next();
 })
-
-// MIDDLEWARE FOR BASE ROUTE
-// app.use('/', async(req,res, next) => {
-//   if(!req.session.user || !req.session.user.verified) {
-//     return res.redirect("/login");
-//   } else {
-//     return res.redirect("/home");
-//   }
-//   next();
-//   })
 
 // MIDDLEWARE ENDS HERE
 

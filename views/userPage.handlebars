@@ -17,7 +17,7 @@
                     <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-house fa-md"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-user fa-md"></i></a>
+                    <a class="nav-link ml-4 mr-4" href="/users"><i class="fa-solid fa-user fa-md"></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-message fa-md"></i></a>
@@ -26,21 +26,7 @@
         </div>
     </nav>
 
-    {{! User profile pic and username }}
-
-    {{!-- <div class="d-flex justify-content-between">
-        <div class="d-flex flex-row align-items-center">
-            <div class="userProfile"><img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAYhFkNrmRfN1VFDiPc-H-l2FEm5MRs2raw&usqp=CAU"
-                    alt="...">
-            </div>
-            <div class="ms-2 ml-2 ">
-                <h6 class="mb-0">{{userName}}</h6> <span>{{date}}</span>
-            </div>
-        </div>
-        <div class="badge"> <span>{{tags}}</span> </div>
-    </div> --}}
-    <!-- Buttons triggering modal -->
+    <!-- Buttons triggering modals -->
 
     <div class="container mytabs mt-4 mb-3">
         <div class="row">
@@ -50,7 +36,7 @@
                         alt="...">
                 </div>
                 <div class="ms-2 mr-2">
-                    <h6 class="mb-0">Gundeep</h6> <span>{{date}}</span>
+                    <h6 id="username" class="mb-0">{{title}}</h6> <span>{{date}}</span>
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4">
@@ -61,17 +47,21 @@
                 <button id="followingBtn" class="btn btn-primary" data-toggle="modal"
                     data-target="#followingModal">Following</button>
             </div>
+            <div class="col-xs-4 col-sm-4 col-md-4">
+                <button id="pendingBtn" class="btn btn-primary" data-toggle="modal"
+                    data-target="#pendingModal">Pending</button>
+            </div>
         </div>
     </div>
 
-    <div class="container">
+    {{!-- <div class="container">
         <div id="editProfileContainer" class="row">
             <button id="editProfileBtn" class="btn btn-primary" data-target="#editProfileModal" data-toggle="modal">Edit
                 Profile</button>
         </div>
-    </div>
+    </div> --}}
 
-    <!-- Modal for Edit Profile -->
+    {{!-- <!-- Modal for Edit Profile -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalTitle"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -82,7 +72,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modalProfile">
                     <form method="PUT" action="/">
                         <label for="usernameInput">Change Username: </label>
                         <input class="form-control mr-sm-2" placeholder="Enter here...">
@@ -90,7 +80,7 @@
                         <label for="emailInput">Change Email: </label>
                         <input class="form-control mr-sm-2" placeholder="Enter here...">
                         <br>
-                        <label for="profilePicInput">Change Profile Pic:: </label>
+                        <label for="profilePicInput">Change Profile Pic: </label>
                         <input class="form-control mr-sm-2" type="file" placeholder="Enter here...">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
@@ -99,7 +89,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Modal for Followers -->
     <div class="modal fade" id="followerModal" tabindex="-1" role="dialog" aria-labelledby="followerModalTitle"
@@ -112,7 +102,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modalFollowers">
 
                 </div>
                 {{!-- <div class="modal-footer">
@@ -133,7 +123,29 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modalFollowing">
+
+                </div>
+                {{!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div> --}}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal for Pending -->
+    <div class="modal fade" id="pendingModal" tabindex="-1" role="dialog" aria-labelledby="pendingModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pendingModalTitle">Pending List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modalPending">
 
                 </div>
                 {{!-- <div class="modal-footer">
@@ -145,14 +157,65 @@
 
     {{! Posts }}
 
-    <div class="container mytabs mt-4 mb-3">
+    {{!-- <div class="container mytabs mt-4 mb-3">
         <div class="row">
             {{#each userPosts}}
             <div class="col-xs-4 col-sm-4 col-md-4">
-                <a href=""><img src={{this.postContent}} class="userPosts" alt="..." /></a>
+                <a data-target="postModal" data-toggle="modal" href=""><img src={{this.postContent}} class="userPosts"
+                        alt="..." /></a>
             </div>
             {{/each}}
         </div>
+    </div> --}}
+
+    <div class="container myposts mt-2">
+        <div class="row">
+            {{#each userPosts}}
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-4">
+
+                <div class="card">
+                    <img src={{this.postContent}} class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="userProfile"><img src={{this.postContent}} alt="..."></div>
+                                <div class="ms-2 ml-2 ">
+                                    <h6 class="mb-0">{{userName}}</h6> <span>{{date}}</span>
+                                </div>
+                            </div>
+                            <div class="badge"> <span>{{tags}}</span> </div>
+                        </div>
+                        <div class="card-text mt-4"> {{caption}}</div>
+                        <div class="d-flex justify-content-stretch mt-4 mb-2">
+
+                            {{#if hasLiked}}
+                            <a class="mr-2 likesBtn" name={{_id}}><i class="fa-solid fa-heart fa-lg"
+                                    style="color:red"></i></a>
+                            {{else}}
+                            <a class="mr-2 likesBtn" name={{_id}}><i class="fa-solid fa-heart fa-lg"
+                                    style="color:white"></i></a>
+                            {{/if}}
+                            <a class="ml-4" href="#"><i class="fa-solid fa-comment fa-lg"></i></a>
+                            <a class="ml-4" href="#"><i class="fas fa-share fa-lg"></i></a>
+                            {{#if savedPosts}}
+
+                            <a class="ml-4 savedPostBtn" id={{_id}}><i class="fa-solid fa-bookmark fa-lg "
+                                    style="color:black"></i></a>
+                            {{else}}
+                            <a class="ml-4 savedPostBtn" id={{_id}}><i class="fa-solid fa-bookmark fa-lg "
+                                    style="color:white"></i></a>
+                            {{/if}}
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {{/each}}
+
+
+        </div>
+    </div>
     </div>
 
     <footer class="footer fixed-bottom text-center text-lg-start">

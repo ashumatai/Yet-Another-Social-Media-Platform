@@ -1,5 +1,5 @@
 const express = require("express");
-const { posts } = require("../config/mongoCollections");
+const { posts, users } = require("../config/mongoCollections");
 const {
   // getAllUsers,
   getUserById,
@@ -9,9 +9,7 @@ const {
 const {
   validObjectId,
   validString,
-  validAge,
   validEmail,
-  validPhoneNumber,
 } = require("../helpers/validations");
 const router = express.Router();
 const xss = require("xss");
@@ -26,14 +24,16 @@ const { ObjectId } = require("mongodb");
 //   }
 // });
 
-router.route("/:userId").get(async (req, res) => {
+router.route("/").get(async (req, res) => {
   try {
-    validObjectId(req.params.userId);
+    // validObjectId(req.session.userId);
+    validObjectId(req.session.user._id);
   } catch (error) {
     res.status(400).send(error);
   }
   try {
-    const user = await getUserById(req.params.userId);
+    // const user = await getUserById(req.session.userId);
+    const user = await getUserById(req.session.user._id);
     const postsCollection = await posts();
     const allUserPosts = [];
 
@@ -43,15 +43,14 @@ router.route("/:userId").get(async (req, res) => {
       const post = await postsCollection.findOne({_id: ObjectId(postId)});
       allUserPosts.push(post);
     }
-
     res.render("userPage", {
       title: user.userName,
       userPosts: allUserPosts,
+      partial: "user-script",
+      css: "user-css"
     });
-    
   } catch (error) {
-    // console.log(error);
-    // res.status(error.code).send(error.message);
+    res.status(error.code).send(error.message);
   }
 });
 
@@ -92,15 +91,10 @@ router.route("/:userId").put(async (req, res) => {
   try {
     if (
       !user.userName ||
-      !user.firstName ||
-      !user.lastName ||
-      !user.email ||
-      !user.phoneNumber ||
-      !user.address ||
-      !user.city ||
-      !user.state ||
-      !user.age ||
-      !user.dateOfBirth
+      // !user.firstName ||
+      // !user.lastName ||
+      !user.email
+      // !user.dateOfBirth
     )
       throw { message: "All fields must be supplied!", code: 400 };
   } catch (error) {
@@ -109,32 +103,34 @@ router.route("/:userId").put(async (req, res) => {
 
   try {
     validString(user.userName, "Username");
-    validString(user.firstName, "First Name");
-    validString(user.lastName, "Last Name");
-    validString(user.address, "Address");
-    validString(user.city, "City");
-    validString(user.state, "State");
+    // validString(user.firstName, "First Name");
+    // validString(user.lastName, "Last Name");
     validEmail(user.email, "Email");
-    validPhoneNumber(user.phoneNumber, "Phone Number");
-    validString(user.dateOfBirth, "DOB");
-    validAge(user.age, "Age");
+    // validString(user.dateOfBirth, "DOB");
   } catch (error) {
     res.status(400).send(error);
+  }
+
+  try {
+    const userCollection = await users();
+    const currentUser = userCollection.findOne({_id: req.params.userId});
+    req.body.usernameInput = currentUser.userName;
+    req.body.emailInput = currentUser.email;
+    req.body.profilePicInput = currentUser.profilePicture;
+  }
+  catch (error) {
+    res.status(502).send("<h2>You are offline!</h2>");
   }
 
   try {
     const updatedUser = await updateUserById(
       req.params.id,
       xss(user.userName),
-      xss(user.firstName),
-      xss(user.lastName),
-      xss(user.address),
-      xss(user.city),
-      xss(user.state),
+      // xss(user.firstName),
+      // xss(user.lastName),
       xss(user.email),
-      xss(user.phoneNumber),
-      xss(user.dateOfBirth),
-      xss(user.age)
+      user.profilePicture
+      // xss(user.dateOfBirth),
     );
     res.json(updatedUser);
   } catch (error) {

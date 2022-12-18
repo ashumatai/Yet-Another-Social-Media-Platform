@@ -58,6 +58,14 @@ const sendEMail = (receiver, req) => {
   return otp;
 };
 
+router.route("/").get(async(req,res) => {
+  if(!req.session.user || !req.session.user.verified) {
+    return res.redirect("/login");
+  } else {
+    return res.redirect("/home");
+  }
+})
+
 router
   .route("/login")
   .get(async (req, res) => {
@@ -93,6 +101,7 @@ router
       validEmail(emailInput);
       validPassword(passwordInput);
     } catch (err) {
+      console.log("Line 96", err);
       return res.status(err?.status ?? 400).render("auth/login", {
         title: "Login",
         error: err?.message ?? err,
@@ -111,6 +120,7 @@ router
         req.session.user = existingUser;
         return res.redirect("otp");
       } else {
+        console.log("Line 115", err);
         return res.status(err?.status ?? 500).render("auth/login", {
           title: "Login",
           error: err?.message ?? err,
@@ -119,6 +129,7 @@ router
         });
       }
     } catch (err) {
+      console.log("Line 124", err);
       return res.status(err?.status ?? 500).render("auth/login", {
         title: "Login",
         error: err?.message ?? err,
@@ -292,7 +303,7 @@ router
 router.route("/logout").get(async (req, res) => {
   //code here for GET
   req.session.destroy();
-  return res.render("logout", {
+  return res.render("auth/logout", {
     title: "Logged out",
     partial: "auth-script",
     css: "auth-css",

@@ -16,6 +16,7 @@ body {
 .form-signin {
   max-width: 330px;
   padding: 15px;
+  text-align: center;
 }
 
 .form-signin .form-floating:focus-within {
@@ -91,4 +92,8 @@ body {
   flex-direction: column;
   align-items: center;
   margin: 15px 0;
+}
+
+#error-div {
+  color: red;
 }
