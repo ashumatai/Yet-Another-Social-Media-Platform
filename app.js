@@ -56,36 +56,29 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// MIDDLEWARE FOR HOME PAGE, ADD SIMILAR MIDDLEWARES FOR ALL PAGES THAT REQUIRE AUTHENTICATION
-app.use('/home', async(req, res, next) => {
+// MIDDLEWARE FOR BASE ROUTE
+app.use('/', async(req,res, next) => {
   if(!req.session.user || !req.session.user.verified) {
     return res.redirect("/login");
+  } else {
+    return res.redirect("/home");
   }
-  next();
 })
 
-// MIDDLEWARE FOR BASE ROUTE
-// app.use('/', async(req,res, next) => {
-//   if(!req.session.user || !req.session.user.verified) {
-//     return res.redirect("/login");
-//   } else {
-//     return res.redirect("/home");
-//   }
-//   next();
-//   })
-
 // AUTH MIDDLEWARE FOR ALL PATHS EXCEPT AUTH PATHS
-// app.use('*', async(req, res, next) => {
-//   if (req.path == '/login' || req.path == '/signup' || req.path == '/otp' || req.path == '/logout') {
-//     next();
-//   }
-//     if(!req.session.user || !req.session.user.verified) {
-//     return res.redirect("/login");
-//   } else {
-//     return res.redirect("/home");
-//   }
-//   next();
-// })
+app.use('*', async(req, res, next) => {
+  if (req.path == '/login' || req.path == '/signup' || req.path == '/otp' || req.path == '/logout') {
+    if(req.session.user && req.session.user.verified) {
+      return res.redirect("/home");
+    }
+    next();
+  }
+  if(!req.session.user || !req.session.user.verified) {
+    return res.redirect("/login");
+  } else {
+    return res.redirect("/home");
+  }
+})
 
 // MIDDLEWARE ENDS HERE
 
