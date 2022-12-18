@@ -5,6 +5,7 @@ const {
   getUserById,
   deleteUserById,
   updateUserById,
+  searchUsers,
 } = require("../data/users");
 const {
   validObjectId,
@@ -135,6 +136,23 @@ router.route("/:userId").put(async (req, res) => {
     res.json(updatedUser);
   } catch (error) {
     res.status(400).send(error);
+  }
+});
+
+router.route("/searchUsers/:searchtext").get(async (req, res) => {
+  try {
+    const searchtext = req?.params?.searchtext;
+    if (!searchtext || typeof searchtext != 'string' || searchtext.trim().length === 0) throw `Search Text not supplied`;
+  } catch (err) {
+    return res.status(400).json({error: err});
+  }
+  const searchtext = req?.params?.searchtext;
+  searchtext = xss(searchtext.trim());
+  try {
+    const matchedUsers = await searchUsers(searchtext);
+    return res.json(matchedUsers);
+  } catch (err) {
+    return res.status(err?.status ?? 500).json({error: err?.message ?? err});
   }
 });
 
