@@ -57,27 +57,19 @@ app.use(async (req, res, next) => {
 });
 
 // MIDDLEWARE FOR BASE ROUTE
-app.use('/', async(req,res, next) => {
-  if(!req.session.user || !req.session.user.verified) {
-    return res.redirect("/login");
-  } else {
-    return res.redirect("/home");
-  }
-})
+
 
 // AUTH MIDDLEWARE FOR ALL PATHS EXCEPT AUTH PATHS
 app.use('*', async(req, res, next) => {
-  if (req.path == '/login' || req.path == '/signup' || req.path == '/otp' || req.path == '/logout') {
+  const reqPath = req.originalUrl;
+  if (reqPath == '/login' || reqPath == '/signup' || reqPath == '/otp' || reqPath == '/logout') {
     if(req.session.user && req.session.user.verified) {
       return res.redirect("/home");
     }
-    next();
-  }
-  if(!req.session.user || !req.session.user.verified) {
+  } else if (!req.session.user || !req.session.user.verified) {
     return res.redirect("/login");
-  } else {
-    return res.redirect("/home");
   }
+  next();
 })
 
 // MIDDLEWARE ENDS HERE

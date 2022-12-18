@@ -58,6 +58,14 @@ const sendEMail = (receiver, req) => {
   return otp;
 };
 
+router.route("/").get(async(req,res) => {
+  if(!req.session.user || !req.session.user.verified) {
+    return res.redirect("/login");
+  } else {
+    return res.redirect("/home");
+  }
+})
+
 router
   .route("/login")
   .get(async (req, res) => {
