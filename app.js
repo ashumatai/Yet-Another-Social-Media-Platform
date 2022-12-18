@@ -74,6 +74,19 @@ app.use('/home', async(req, res, next) => {
 //   next();
 //   })
 
+// AUTH MIDDLEWARE FOR ALL PATHS EXCEPT AUTH PATHS
+// app.use('*', async(req, res, next) => {
+//   if (req.path == '/login' || req.path == '/signup' || req.path == '/otp' || req.path == '/logout') {
+//     next();
+//   }
+//     if(!req.session.user || !req.session.user.verified) {
+//     return res.redirect("/login");
+//   } else {
+//     return res.redirect("/home");
+//   }
+//   next();
+// })
+
 // MIDDLEWARE ENDS HERE
 
 configRoutes(app);
