@@ -40,8 +40,8 @@ app.use(
     name: "YASMPAuthCookie",
     secret: "Our secrets are ours to keep",
     saveUninitialized: false,
-    resave: false,
-    cookie: { maxAge: 60000 },
+    resave: true,
+    cookie: { maxAge: 6000000 },
   })
 );
 
