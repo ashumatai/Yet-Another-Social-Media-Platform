@@ -13,7 +13,7 @@ Yet Another Social Media Platform (YASMP) is a simple user-friendly platform tha
 **Test user accounts (same password for email to get OTP)**
 1. GMAIL.COM Email: jacob53.kenneth@gmail.com Password: Test@1234
 2. GMAIL.COM Email: yohann.burgess@gmail.com Password: Test@1234
-3. GMAIL.COM Email: myprojectsacc1@gmail.com Password: my@projects#acc$1
+3. GMAIL.COM Email: myprojectsacc1@gmail.com Password: my@projects#acc$1 (Password for YASMP is different for this one: Test@1234)
 4. MAIL.COM Email: hooha.heheh@mail.com Password: Test@1234
 5. GMAIL.COM Email: webprogramming111@gmail.com Password: Testing@123
 6. MAIL.COM Email: webprogramming222@mail.com Password: Testing@123
