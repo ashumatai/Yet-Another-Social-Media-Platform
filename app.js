@@ -63,7 +63,7 @@ app.use(async (req, res, next) => {
 // AUTH MIDDLEWARE FOR ALL PATHS EXCEPT AUTH PATHS
 app.use('*', async(req, res, next) => {
   const reqPath = req.originalUrl;
-  if (reqPath == '/login' || reqPath == '/signup' || reqPath == '/otp' || reqPath == '/logout') {
+  if (reqPath == '/login' || reqPath == '/signup' || reqPath == '/otp') {
     if(req.session?.user?.verified) {
       return res.redirect("/home");
     }

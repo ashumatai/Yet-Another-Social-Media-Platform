@@ -74,8 +74,7 @@ const createPost = async ( postContent, caption, tags, userId) => {
   postContent=postContent.trim();
   caption=caption.trim().toLowerCase();
   tags=tags.trim().toLowerCase();
-  let date= moment().format("LLLL");
-
+  let date= moment().format("MM/DD/YYYY");
   const postCollection = await posts();
 
   let newPost = {

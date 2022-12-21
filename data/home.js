@@ -92,6 +92,11 @@ const getAllPost = async (userId) => {
     const user_data = await userscollection.findOne({_id: ObjectId(userId)});
     if(user_data === null) throw {error:'No user found with '+userId};
     const followingtData = user_data.followings;
+    // console.log(followingtData);
+    // console.log(typeof(followingtData));
+    if(followingtData === undefined || followingtData===null){
+      throw {error:'No followings found to show feed '};
+    }
     const sessionUser_savedPosts = user_data.savedPosts;
     for (const fdata of followingtData) {
         const following_data = await userscollection.findOne({_id: ObjectId(fdata)});

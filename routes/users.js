@@ -139,14 +139,14 @@ router.route("/:userId").put(async (req, res) => {
   }
 });
 
-router.route("/searchUsers/:searchtext").get(async (req, res) => {
+router.route("/searchUsers/").get(async (req, res) => {
   try {
-    const searchtext = req?.params?.searchtext;
+    const searchtext = req?.body?.user;
     if (!searchtext || typeof searchtext != 'string' || searchtext.trim().length === 0) throw `Search Text not supplied`;
   } catch (err) {
     return res.status(400).json({error: err});
   }
-  const searchtext = req?.params?.searchtext;
+  const searchtext = req?.body?.user;
   searchtext = xss(searchtext.trim());
   try {
     const matchedUsers = await searchUsers(searchtext);

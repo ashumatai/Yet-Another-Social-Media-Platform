@@ -11,7 +11,7 @@ router
       userId = userId.trim();
       if(validatiion.validString(userId,"ID"));
       if(validatiion.validObjectId(userId,"ID"));
-      const savedPost = await savedPostData.getsavedPost(userId);
+      const savedPost = await savedPostData.getsavedPost("639f83be3d672fdc29373608");
       return res
           .status(200)
           .render('home/homePage',{
@@ -31,7 +31,7 @@ router
           partial: "home-script",
           css: "home-css",
           title:"Error",
-          error:e});
+          error:e.error});
           // res.status(404).send(e);       
       }
       else{
@@ -57,7 +57,7 @@ router
       if(validatiion.validObjectId(userId,"ID"));
       if(validatiion.validObjectId(req.body.postId,"ID"));
       req.body.postId = req.body.postId.trim();
-      const savedPost = await savedPostData.addsavedPost(userId,req.body.postId);
+      const savedPost = await savedPostData.addsavedPost("639f83be3d672fdc29373608",req.body.postId);
       // const savedPost = req.body.postId;
       res.json(savedPost);
    
@@ -65,14 +65,14 @@ router
     catch (e) {
       if(typeof(e)==='object'){
         // console.log(e);
-          res.status(404).send(e);       
+        return  res.status(404).send(e);       
       }
       else if(typeof(e)==='number'){
-        res.status(500).send("Cannot save the post");
+       return  res.status(500).send("Cannot save the post");
       }
       else{
         
-        res.status(400).send(e);
+       return res.status(400).send(e);
       }
     } 
   });
@@ -80,26 +80,26 @@ router
   .route('/')
   .delete(async (req, res) => {
     try {
-      let userId = req.session.user._id.toString();
-      userId = userId.trim();
-      if(validatiion.validString(userId,"ID"));
-      if(validatiion.validObjectId(userId,"ID"));
-      if(validatiion.validObjectId(req.body.postId,"ID"));
-      req.body.postId = req.body.postId.trim();
+      // let userId = req.session.user._id.toString();
+      // userId = userId.trim();
+      // if(validatiion.validString(userId,"ID"));
+      // if(validatiion.validObjectId(userId,"ID"));
+      // if(validatiion.validObjectId(req.body.postId,"ID"));
+      // req.body.postId = req.body.postId.trim();
       // trim user id
-      const savedPost = await savedPostData.deletesavedPost(userId,req.body.postId);
+      const savedPost = await savedPostData.deletesavedPost("639f83be3d672fdc29373608",req.body.postId);
       // const savedPost = req.body.postId;
       res.json(savedPost);
     } 
     catch (e) {
       if(typeof(e)==='object'){
-          res.status(404).send(e);       
+         return res.status(404).send(e);       
       }
       else if(typeof(e)==='number'){
-        res.status(500).send("Cannot unsave the post");
+       return res.status(500).send("Cannot unsave the post");
       }
       else{
-        res.status(400).send(e);
+        return res.status(400).send(e);
       }
     } 
   });

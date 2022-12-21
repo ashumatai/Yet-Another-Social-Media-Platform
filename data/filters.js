@@ -174,7 +174,9 @@ const {ObjectId} = require('mongodb');
       if(postsUser === null) throw {error:'No user found with this post'};
       data.userName = postsUser.userName;
       data.profilePicture = postsUser.profilePicture;
-      if(sessionUser_savedPosts.includes(data)){
+      console.log(sessionUser_savedPosts);
+      console.log(data._id.toString());
+      if(sessionUser_savedPosts.includes(data._id.toString())){
         data.savedPosts = true;
       }
       else{

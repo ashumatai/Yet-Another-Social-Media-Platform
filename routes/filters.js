@@ -161,7 +161,7 @@ router
             //   css: "home-css",
             //   title:"Error",
             //   error:e});
-              res.status(404).send(e);       
+              return res.status(404).send(e);       
           }
           else{
             // return res
@@ -171,7 +171,7 @@ router
             //   css: "home-css",
             //   title:"Error",
             //   error:e});
-            res.status(400).send(e);
+            return res.status(400).send(e);
           }
         } 
   });

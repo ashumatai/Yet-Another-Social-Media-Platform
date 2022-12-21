@@ -41,9 +41,7 @@ const constructorMethod = (app) => {
     uploadImage(req, res, function (e) {
       if(e)
         return res.status(500).json("Failed to upload image");
-        console.log(file);
       let path = req.file.destination + "/" + req.file.filename;
-      console.log(path);
       path = path.substring(1);
       return res.json(path);
     });

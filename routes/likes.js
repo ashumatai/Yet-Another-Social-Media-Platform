@@ -18,20 +18,20 @@ const validatiion = require('../helpers/validations');
       if(validatiion.validObjectId(req.body.postId,"ID"));
       req.body.postId = req.body.postId.trim();
       // trim user id
-      const addedLikes = await likesData.addLikes(userId,req.body.postId);
+      const addedLikes = await likesData.addLikes("639f83be3d672fdc29373608",req.body.postId);
       // const savedPost = req.body.postId;
       res.json(addedLikes);
     } 
     catch (e) {
       if(typeof(e)==='object'){
-          res.status(404).send(e);       
+         return  res.status(404).send(e);       
       }
       else if(typeof(e)==='number'){
-        res.status(500).send("Cannot like the post");
+        return res.status(500).send("Cannot like the post");
       }
       else{
         // console.log(e);
-        res.status(400).send(e);
+        return res.status(400).send(e);
       }
     } 
   });
@@ -48,20 +48,20 @@ const validatiion = require('../helpers/validations');
       req.body.postId = req.body.postId.trim();
       req.body.postId = req.body.postId.trim();
       // trim user id
-      const deletedLikes = await likesData.deleteLikes(userId,req.body.postId);
+      const deletedLikes = await likesData.deleteLikes("639f83be3d672fdc29373608",req.body.postId);
       // const savedPost = req.body.postId;
       res.json(deletedLikes);
     } 
     catch (e) {
       if(typeof(e)==='object'){
-          res.status(404).send(e);       
+        return  res.status(404).send(e);       
       }
       else if(typeof(e)==='number'){
-        res.status(500).send("Cannot unlike the post");
+        return res.status(500).send("Cannot unlike the post");
       }
       else{
         // console.log(e);
-        res.status(400).send(e);
+        return res.status(400).send(e);
       }
     } 
   });

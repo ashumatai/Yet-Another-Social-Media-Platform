@@ -156,7 +156,7 @@ const createUser = async (firstnameInput, lastnameInput, DOBInput, usernameInput
       dateOfBirth: DOBInput,
       profilePicture: null,
       followers: [],
-      following: [],
+      followings: [],
       savedPosts: [],
       userPosts: [],
       followRequests: [],

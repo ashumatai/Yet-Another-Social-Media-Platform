@@ -10,22 +10,13 @@ router
   .route('/')
   .get(async (req, res) => {
     try {
-      if (!req.session.user || !req.session.user.verified) 
-      {
-          return res
-          .status(200)
-          .render("auth/signup", {
-            title: "Sign-up",
-            partial: "auth-script",
-            css: "auth-css",
-          });
-      }
-      else{
+      
+      
           let userId = req.session.user._id.toString();
           userId = userId.trim();
           if(validatiion.validString(userId,"ID"));
           if(validatiion.validObjectId(userId,"ID"));
-          const posts = await homeData.getAllPost(userId);
+          const posts = await homeData.getAllPost("639f83be3d672fdc29373608");
           // res.json(posts);
           // console.log(posts);
           return res
@@ -35,9 +26,8 @@ router
           css: "home-css",
           title:"Home",
           postData:posts,
-          userId:"63963928ac02e3a9db204155"
         });
-      }
+      
       
     } 
     catch (e) {
@@ -48,7 +38,7 @@ router
           partial: "home-script",
           css: "home-css",
           title:"Error",
-          error:e});
+          error:e.error});
           // res.status(404).send(e);       
       }
       else{
@@ -67,17 +57,8 @@ router
   .route('/feed')
   .get(async (req, res) => {
     try {
-      if (!req.session.user || !req.session.user.verified) 
-      {
-          return res
-          .status(200)
-          .render("auth/signup", {
-            title: "Sign-up",
-            partial: "auth-script",
-            css: "auth-css",
-          });
-      }
-       else{
+    
+     
               let userId = req.session.user._id.toString();
               userId = userId.trim();
               if(validatiion.validString(userId,"ID"));
@@ -92,21 +73,23 @@ router
               postData:followingPost});
               
             }
-        } 
+        
     catch (e) {
       if(typeof(e)==='object'){
           // res.status(404).send(e);
+          console.log(e)
           return res
           .status(404)
           .render('home/error',{
           partial: "home-script",
           css: "home-css",
           title:"Error",
-          error:e});       
+          error:e.error});       
       }
       else{
         // console.log(e);
         // res.status(400).send(e);
+        console.log(e);
         return res
         .status(400)
         .render('home/error',{

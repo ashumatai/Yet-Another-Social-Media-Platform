@@ -14,14 +14,12 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-house fa-md"></i></a>
+                    <a class="nav-link ml-4 mr-4 homeBtn" href="#"><i class="fa-solid fa-house fa-md"></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link ml-4 mr-4" href="/users"><i class="fa-solid fa-user fa-md"></i></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link ml-4 mr-4" href="#"><i class="fa-solid fa-message fa-md"></i></a>
-                </li>
+              
             </ul>
         </div>
     </nav>
@@ -32,8 +30,8 @@
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4">
                 <div class="userProfile"><img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTAYhFkNrmRfN1VFDiPc-H-l2FEm5MRs2raw&usqp=CAU"
-                        alt="...">
+                        src="{{profilePicture}}"
+                        alt="userprofile">
                 </div>
                 <div class="ms-2 mr-2">
                     <h6 id="username" class="mb-0">{{title}}</h6> <span>{{date}}</span>
@@ -171,53 +169,135 @@
     <div class="container myposts mt-2">
         <div class="row">
             {{#each userPosts}}
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-4">
-
-                <div class="card">
-                    <img src={{this.postContent}} class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex flex-row align-items-center">
-                                <div class="userProfile"><img src={{this.postContent}} alt="..."></div>
-                                <div class="ms-2 ml-2 ">
-                                    <h6 class="mb-0">{{userName}}</h6> <span>{{date}}</span>
+            
+                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-4">
+                    <div class="card" >
+                        <img src="../..{{postContent}}" class="card-img-top" alt="postcontent">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div class="userProfile"><img src="../..{{profilePicture}}"  alt="userProfile"></div>
+                                    <div class="ms-2 ml-2 ">
+                                        <p class="mb-0">{{userName}}</p> <span>{{date}}</span>
+                                    </div>
                                 </div>
+                                <div class="badge"> <span>{{tags}}</span> </div>
                             </div>
-                            <div class="badge"> <span>{{tags}}</span> </div>
-                        </div>
-                        <div class="card-text mt-4"> {{caption}}</div>
-                        <div class="d-flex justify-content-stretch mt-4 mb-2">
-
-                            {{#if hasLiked}}
-                            <a class="mr-2 likesBtn" name={{_id}}><i class="fa-solid fa-heart fa-lg"
-                                    style="color:red"></i></a>
-                            {{else}}
-                            <a class="mr-2 likesBtn" name={{_id}}><i class="fa-solid fa-heart fa-lg"
-                                    style="color:white"></i></a>
-                            {{/if}}
-                            <a class="ml-4" href="#"><i class="fa-solid fa-comment fa-lg"></i></a>
-                            <a class="ml-4" href="#"><i class="fas fa-share fa-lg"></i></a>
-                            {{#if savedPosts}}
-
-                            <a class="ml-4 savedPostBtn" id={{_id}}><i class="fa-solid fa-bookmark fa-lg "
-                                    style="color:black"></i></a>
-                            {{else}}
-                            <a class="ml-4 savedPostBtn" id={{_id}}><i class="fa-solid fa-bookmark fa-lg "
-                                    style="color:white"></i></a>
-                            {{/if}}
-
+                            <div class="card-text mt-4"> {{caption}}</div>
+                            <div class="d-flex justify-content-stretch mt-4 mb-2">
+                                    
+                                        {{#if hasLiked}}
+                                            <a class="mr-2 likesBtn" name="{{_id}}"><i class="fa-solid fa-heart fa-lg" style="color:red"></i>
+                                                {{#if noOfLikes}}
+                                                    <p class="mr-2 no_likes">{{noOfLikes}} </p>
+                                                    {{else}}
+                                                    <p class="mr-2 no_likes"> 0 </p>
+                                                {{/if}}
+                                            </a>
+                                        {{else}}
+                                            <a class="mr-2 likesBtn" name="{{_id}}"><i class="fa-solid fa-heart fa-lg" style="color:white"></i>
+                                                 {{#if noOfLikes}}
+                                                    <p class="mr-2 no_likes">{{noOfLikes}} </p>
+                                                    {{else}}
+                                                    <p class="mr-2 no_likes"> 0 </p>
+                                                {{/if}}
+                                            </a>
+                                        {{/if}}
+                                        
+                                        <a class="ml-4 commentsBtn" name="{{_id}}" data-toggle="modal" data-target="#commentModal"><i class="fa-solid fa-comment fa-lg"></i>
+                                            <p class="mr-2 no_comments">{{comments.length}}</p>
+                                        </a>
+                                        <a class="ml-4 shareBtn" name="{{_id}}" data-toggle="modal" data-target="#shareModal"><i class="fas fa-share fa-lg"></i></a>
+                                        {{#if savedPosts}}
+                                            
+                                            <a class="ml-4 savedPostBtn" id="{{_id}}"><i class="fa-solid fa-bookmark fa-lg " style="color:black"></i>
+                                                
+                                            </a>
+                                            {{else}}
+                                            <a class="ml-4 savedPostBtn" id="{{_id}}"><i class="fa-solid fa-bookmark fa-lg " style="color:white"></i>
+                                               
+                                            </a>
+                                        {{/if}}
+                                       
+                                        
+                                        
+                            </div>
+                            <div class="d-flex justify-content-stretch mt-4 mb-2">
+                                    
+                                        
+                                        
+                                        
+                                       
+                                        
+                                        
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
             {{/each}}
+       
 
 
         </div>
     </div>
     </div>
+{{!-- Comment Modal --}}
 
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="commentModalLabel">Comments</h5>
+        <button type="button" class="close commentClose" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container row allComments">
+          
+        </div>
+
+        <form id="addComment" action="#">
+            <label for="comment">Comment:</label><br>
+            <input type="text" id="comment" name="comment"><br><br>
+            <button type="submit" class="btn btn-primary">Save Comment</button>
+        </form> 
+        <p class="error"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary commentClose" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- share Modal --}}
+
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shareModalLabel">Share Post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container row allUsers">
+          
+        </div>
+
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+  </div>
+</div>
     <footer class="footer fixed-bottom text-center text-lg-start">
 
         <div class="text-center p-3">

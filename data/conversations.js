@@ -161,8 +161,6 @@ const startConversation = async (userId, otherUserId) => {
  * @param {string} otherUserId - ID of the other user.
  * @param {string} message - content of the message.
  */
-
-
 const addMessage = async (userId, otherUserId, message) => {
 
   if (helper.validObjectId(userId, "ID"));
@@ -286,6 +284,65 @@ const addMessage = async (userId, otherUserId, message) => {
     return "message sent successfully!!!!"
   }
 }
+
+
+// const deleteConversation = async (directMessageIds) => { 
+
+  
+//   const userCollection = await users();
+//   const user = await userCollection.find({}).toArray();
+//   //console.log(user);
+//   if(user=== null)
+//     throw [400,"This user ID does not exists"];
+  
+//   movie.forEach(element => {
+//     element.reviews.forEach(data => {
+//       if(data._id.toString() === reviewId) {
+//         movieID = element._id;
+//         console.log(movieID)
+//       }
+//     })
+//   });
+//   const removeReview = await movieCollection.updateMany({}, {$pull: {reviews: {_id: ObjectId(reviewId)}}});   
+//   console.log(removeReview);
+//   if(!removeReview.matchedCount && !removeReview.modifiedCount)
+//     throw [500,"Can't remove this Review"];
+        
+//   const movieReview = await movieCollection.find({}).toArray();
+//   console.log("this is movieReview");
+//   //console.log(movieReview);
+//   if(movieReview === null)
+//     throw [404,"No review present with that Id"];
+
+//   movieReview.forEach(element => {
+//     if(element._id.toString() === movieID.toString()) {
+//       element.reviews.forEach(data => {
+//         avgRating += data.rating;
+//     })
+//     avgRating = (avgRating/element.reviews.length);
+//     }
+//   });
+
+//   if(isNaN(avgRating)){
+//     avgRating=0;
+//   }
+
+//   avgRating= Math.round(avgRating * 10) / 10; 
+//   const reviewUpdate = await movieCollection.updateOne(
+//       {_id: ObjectId(movieID)},
+//       {$set: {overallRating: avgRating}}
+//   )
+
+//   if(!reviewUpdate.matchedCount && !reviewUpdate.modifiedCount)
+//       throw [500,"Update of the rating has been failed"];
+
+//   // resultData = {"reviewId": reviewId, "deleted": true};  
+//   // return resultData;
+
+//   const movieReturned= await movieCollection.findOne({ _id: ObjectId(movieID)});
+//   return movieReturned;
+  
+// }
 
 module.exports = {
   startConversation,

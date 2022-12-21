@@ -9,28 +9,28 @@ const {ObjectId} = require('mongodb');
 const validatiion = require('../helpers/validations');
 const followingsData = require("../data/followings");
 
-  // router
-  // .route('/')
-  // .get(async (req, res) => {
-  //   try {
+  router
+  .route('/')
+  .get(async (req, res) => {
+    try {
     
-  //     let userId = req.session.user._id.toString();
-  //     userId = userId.trim();
-  //     if(validatiion.validString(userId,"ID"));
-  //     if(validatiion.validObjectId(userId,"ID"));
-  //     const followers = await followersData.getFollowers(userId);
+      let userId = req.session.user._id.toString();
+      userId = userId.trim();
+      if(validatiion.validString(userId,"ID"));
+      if(validatiion.validObjectId(userId,"ID"));
+      const followers = await followersData.getFollowers(userId);
       
-  //     res.json(followers);
-  //   } 
-  //   catch (e) {
-  //     if(typeof(e)==='object'){
-  //         res.status(404).send(e);       
-  //     }
-  //     else{
-  //       res.status(400).send(e);
-  //     }
-  //   } 
-  // });
+      res.json(followers);
+    } 
+    catch (e) {
+      if(typeof(e)==='object'){
+          res.status(404).send(e);       
+      }
+      else{
+        res.status(400).send(e);
+      }
+    } 
+  });
   router
   .route('/followersandfollowing')
   .get(async (req, res) => {
@@ -55,31 +55,38 @@ const followingsData = require("../data/followings");
     } 
   });
 
-router.route("/").get(async (req, res) => {
-  try {
-    if (validatiion.validObjectId("639518baec8160da0010d848", "ID"));
-    // req.params.userId = req.params.userId.trim();
-    const followers = await followersData.getFollowers(
-      "639518baec8160da0010d848"
-    );
-    res.json(followers);
-  } catch (e) {
-    if (typeof e === "object") {
-      res.status(404).send(e);
-    } else {
-      res.status(400).send(e);
-    }
-  }
-});
+// router.route("/").get(async (req, res) => {
+//   try {
+//     let userId = req.session.user._id.toString();
+//     userId = userId.trim();
+//     if(validatiion.validString(userId,"ID"));
+//     if(validatiion.validObjectId(userId,"ID"));
+//     const followers = await followersData.getFollowersAndFollowing(userId);
+//     // req.params.userId = req.params.userId.trim();
+   
+//     res.json(followers);
+//   } catch (e) {
+//     if (typeof e === "object") {
+//       res.status(404).send(e);
+//     } else {
+//       res.status(400).send(e);
+//     }
+//   }
+// });
+
+
+
+
+
 
 router.route("/follow").post(async (req, res) => {
   const ids = req.body;
   
   try {
-    validatiion.validObjectId("639518baec8160da0010d848", "ID");
-    validatiion.validObjectId("63963928ac02e3a9db204155", "ID");
+    validatiion.validObjectId(req.session.user._id, "ID");
+    validatiion.validObjectId(req.session.user._id, "ID");
 
-    const follow = await followersData.follow("639518baec8160da0010d848", ids.id);
+    const follow = await followersData.follow(req.session.user._id, ids.id);
     res.send(follow);
   } catch (e) {
     console.log(e)

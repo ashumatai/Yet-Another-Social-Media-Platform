@@ -66,12 +66,9 @@ router.route('posts/:postId').delete(async (req, res) => {
 
 router.route('/').post(async (req, res) => {
   const postInfo = req.body;
-  if(helper.validString(postInfo.postId, "ID"));
   if(helper.validString(postInfo.postContent, "ID"));
   if(helper.validString(postInfo.tags, "ID"));
-  if(helper.validObjectId(postId, "ID"));
-  postInfo.postId=postInfo.postId.trim();
-  postInfo.postContent=postInfo.postContent.trim();
+  postInfo.postContent=postInfo.postContent;
   postInfo.tags=postInfo.tags.trim();
 
   try {
@@ -79,8 +76,7 @@ router.route('/').post(async (req, res) => {
       postInfo.postContent,
       postInfo.caption,
       postInfo.tags,
-      //req.session.user
-      '639518baec8160da0010d848'
+      req.session.user._id.toString(),
     );
     res.json(newPost);
   } catch (e) {

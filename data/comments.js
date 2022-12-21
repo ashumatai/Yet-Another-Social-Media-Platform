@@ -1,7 +1,3 @@
-/**
- * @author Deepali Nagwade <dnagwade@stevens.edu>
- * */
-
 const mongoCollections = require('../config/mongoCollections');
 const posts = mongoCollections.posts;
 const users = mongoCollections.users;
@@ -23,13 +19,13 @@ const postComment = async (postId, userId, commentContent) => {
 
   }
   catch(e){
-    console.log(e);
+    // console.log(e);
     throw e;
   }
   
   const postCollection = await posts();
   const postD = await postCollection.findOne({ _id: ObjectId(postId)});
-  console.log(postD);
+  // console.log(postD);
 
   if(postD === null)
     throw [400,"Post does not exists"];
@@ -41,7 +37,7 @@ const postComment = async (postId, userId, commentContent) => {
     commentContent
   };
 
-  console.log(newComment);
+  // console.log(newComment);
 
   let commentArray=[];
   const addComment = await postCollection.updateOne(
@@ -74,7 +70,16 @@ const postComment = async (postId, userId, commentContent) => {
       }
     }
   }
-  return post1;
+  let result = [];
+  const userscollection = await users();
+  const user = await userscollection.findOne({_id: ObjectId(userId)})
+  if(user === null){
+    throw [400,"No user found with that id"];
+  }
+  result.push(user.userName);
+  result.push(user.profilePicture);
+  result.push(commentContent);
+  return result;
 };
 
 const getCommentsByPostId = async (postId) => {
@@ -88,13 +93,20 @@ const getCommentsByPostId = async (postId) => {
   
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postId)});
-
+  let result =[];
+  // return post;
   if (post === null)
       throw [404,"No Post found with that id"];
 
   post.comments.forEach(element => {
       element._id = element._id.toString();
   })
+  const userscollection = await users();
+  for (const userData of post.comments) {
+    const user = await userscollection.findOne({_id: ObjectId(userData.userId)})
+    userData.userName = user.userName;
+    userData.profilePicture = user.profilePicture;
+  }
   if(post.comments.length===0){
     throw [404,"No Comments found with this post"];
   }

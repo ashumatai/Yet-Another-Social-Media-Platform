@@ -11,32 +11,32 @@ const {ObjectId} = require('mongodb');
 /**
 * Function to get all conversations of a user
  */
-router.route('/').get(async (req, res) => {
-  try {
-    //const userId= req.session.userId;
-    let userId = "639518baec8160da0010d848";
-    if(helper.validObjectId(userId, "ID"));
-    userId = userId.trim();
+// router.route('/').get(async (req, res) => {
+//   try {
+//     let userId= req.session.user._id;
+//     //let userId = "639518baec8160da0010d848";
+//     if(helper.validObjectId(userId, "ID"));
+//     userId = userId.trim();
 
-    const convo  = await convoData.getAllConversations(userId);
-    if(convo.length){
-      res.json(convo);
-    }
-  } catch (e) {
-    console.log(e);
-    return res.status(404).json(e);
-  }
-});
+//     const convo  = await convoData.getAllConversations(userId);
+//     if(convo.length){
+//       res.json(convo);
+//     }
+//   } catch (e) {
+//     console.log(e);
+//     return res.status(404).json(e);
+//   }
+// });
 
 
 /**
 * Function to get conversations of a user with a particular User
  * @param {string} userId - ID of the other user.
  */
-router.route('/:userId').get(async (req, res) => {
+router.route('/').get(async (req, res) => {
   try {
-  //const userId= req.session.userId;
-  let userId= '639518baec8160da0010d848';
+  let userId= req.session.user._id;
+  //let userId= '639518baec8160da0010d848';
   let otherUserId = req.params.userId;
 
   if(helper.validObjectId(userId, "ID"));
@@ -59,8 +59,8 @@ router.route('/:userId').get(async (req, res) => {
  */
 router.route('/:startConvo').post(async (req, res) => {
   try {
-    //const userId = req.session.user.userId;
-    let userId= "639518baec8160da0010d848";
+    let userId = req.session.user._id;
+    //let userId= "639518baec8160da0010d848";
     let messageInfo= req.body;
 
     if(helper.validObjectId(userId, "ID"));
@@ -80,6 +80,8 @@ router.route('/:startConvo').post(async (req, res) => {
 });
 
 router.route('/:userId').delete(async (req, res) => {
+
+  
 
 
 });
